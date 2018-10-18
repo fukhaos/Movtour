@@ -14,18 +14,19 @@ import {
   Alert,
   Button,
   BackHandler,
-  AppState
+  AppState,
+  Platform
 } from 'react-native';
 
 import { Icon } from 'react-native-elements';                         //done
 import moment from 'moment';                                          //done
-import PushNotification from 'react-native-push-notification';
-import Beacons  from 'react-native-beacons-manager';
+import PushNotification from 'react-native-push-notification';        //done
+import Beacons  from 'react-native-beacons-manager';                  //done
 import DeviceInfo from 'react-native-device-info';                    //done
-import fetch from 'react-native-fetch-polyfill';
-import RNFS from 'react-native-fs';
-import * as Progress from 'react-native-progress';
-import Display from 'react-native-display';
+import fetch from 'react-native-fetch-polyfill';                      //done
+import RNFS from 'react-native-fs';                                   //done but without testing
+import * as Progress from 'react-native-progress';                    //done
+import Display from 'react-native-display';                           //done
 import { BluetoothStatus } from 'react-native-bluetooth-status';      //done
 import ActionButton from 'react-native-action-button';
 import I18n from './translate/i18n';
@@ -54,24 +55,31 @@ export default class Homepage extends Component {
     data: [],
     homepageKey: '',
     appState: AppState.currentState,
-    date_time: 0
+    date_time: 0,
   }
 
   componentWillMount() {
     RNFS.mkdir(RNFS.DocumentDirectoryPath+ '/images/');
 
-    Beacons.detectIBeacons();
-    Beacons.setBackgroundScanPeriod(30000);
+    // Beacons.requestWhenInUseAuthorization();
+    // Beacons.requestAlwaysAuthorization();
 
-    Beacons
-    .startMonitoringForRegion({identifier: 'Tomar', uuid:null})
-    .then(() => console.log('Beacons monitoring started succesfully'))
-    .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+    // if(Platform.OS === 'android'){
+      // Beacons.detectIBeacons();
+    // }
 
-   Beacons
-    .startRangingBeaconsInRegion({identifier: 'Tomar', uuid:null})
-    .then(() => console.log('Beacons ranging started succesfully'))
-    .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+    // Beacons.startUpdatingLocation();
+    // Beacons.setBackgroundScanPeriod(3´0000);
+
+    // Beacons
+    //   .startMonitoringForRegion({identifier: 'Tomar', uuid:null})
+    //   .then(() => console.log('Beacons monitoring started succesfully'))
+    //   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+    //
+    // Beacons
+      // .startRangingBeaconsInRegion({identifier: 'Tomar', uuid:null})
+    //   .then(() => console.log('Beacons ranging started succesfully'))
+    //   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
     //Vai buscar a linguagem à memória
     AsyncStorage.getItem('@Language', (err, value) => {
@@ -86,8 +94,6 @@ export default class Homepage extends Component {
   }
 
   componentDidMount(){
-
-
     const {navigate} = this.props.navigation;
 
     //Guardar chave da componente
@@ -191,13 +197,13 @@ export default class Homepage extends Component {
         }, 5000);
       }
 
-      DeviceEventEmitter.addListener('regionDidEnter',(dataEnter) => {
-        console.log('monitoring - regionDidEnter data: ', dataEnter);
-      });
-
-      DeviceEventEmitter.addListener('regionDidExit',(dataExit) => {
-        console.log('monitoring - regionDidExit data: ', dataExit);
-      });
+      // DeviceEventEmitter.addListener('regionDidEnter',(dataEnter) => {
+      //   console.log('monitoring - regionDidEnter data: ', dataEnter);
+      // });
+      //
+      // DeviceEventEmitter.addListener('regionDidExit',(dataExit) => {
+      //   console.log('monitoring - regionDidExit data: ', dataExit);
+      // });
 
       AppState.addEventListener('change', this._handleAppStateChange);
 
@@ -558,9 +564,8 @@ export default class Homepage extends Component {
               if(j.beacon.uuid === beacon.uuid){
 
                 // Envia notificação
-                PushNotification.localNotificationSchedule({
-                    message: j.name, // (required)
-                    date: new Date(Date.now())
+                PushNotification.localNotification({
+                    message: j.name
                 });
 
                 // Faz um post
@@ -694,6 +699,7 @@ export default class Homepage extends Component {
 
   async saveLanguage(value){
     I18n.locale = value;
+    this.setState({})
     try {
       await AsyncStorage.setItem('@Language', JSON.stringify(value));
       console.log("@Language saved");
@@ -724,7 +730,7 @@ export default class Homepage extends Component {
   }
 
   render(){
-    // console.log("DADOS: ", this.state.data);
+    console.log("DADOS: ", this.state.data);
     const { navigate } = this.props.navigation;
     const window = Dimensions.get('window');
     // console.log('Images Downloaded: ', this.state.imagesDownloaded);
@@ -904,7 +910,7 @@ const styles = StyleSheet.create({
   tituloText:{
     fontSize: 90,
     fontWeight: '100',
-    fontFamily: 'sans-serif-light',
+    // fontFamily: 'sans-serif-light',
     color: 'white',
     textShadowColor:'#252525',
     textShadowOffset:{width:2, height:2},
@@ -953,7 +959,7 @@ const styles = StyleSheet.create({
   buttonText:{
     fontSize: 20,
     fontWeight: '100',
-    fontFamily: 'sans-serif-light',
+    // fontFamily: 'sans-serif-light',
     color: 'white',
     marginTop: 10
   },
@@ -963,7 +969,7 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: 'normal',
     textAlign: 'center',
-    fontFamily: 'sans-serif-light',
+    // fontFamily: 'sans-serif-light',
   },
 
 	dscpContainer: {
@@ -989,7 +995,7 @@ const styles = StyleSheet.create({
 	dscpText: {
 		fontSize: 18,
     fontWeight: '100',
-    fontFamily: 'sans-serif-light',
+    // fontFamily: 'sans-serif-light',
     color: 'white'
 	}
 

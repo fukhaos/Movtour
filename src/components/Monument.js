@@ -13,7 +13,7 @@ import {
 import RNFS from 'react-native-fs';
 
 const Monument = ({ navigation }) => {
-  console.log(navigation);
+  // console.log(navigation);
   const { navigate } = navigation;
   const { data } = navigation.state.params;
   return (
@@ -62,7 +62,8 @@ const styles = StyleSheet.create({
 	},
 	monumentoPic:{
 		justifyContent:'flex-end',
-		height:((Dimensions.get('window').height - StatusBar.currentHeight - 40 - 66)/3),
+    // height:((Dimensions.get('window').height - StatusBar.currentHeight - 40 - 66)/3),
+		height:((Dimensions.get('window').height-106)/3),
 		width:Dimensions.get('window').width
 	},
 	monumentoTitleContainer:{

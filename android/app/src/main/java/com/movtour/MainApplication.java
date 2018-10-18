@@ -3,6 +3,11 @@ package com.movtour;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactcommunity.rnlanguages.RNLanguagesPackage;
+import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
+import com.rnfs.RNFSPackage;
+import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
+import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
 import com.github.wumke.RNExitApp.RNExitAppPackage;
 import com.solinor.bluetoothstatus.RNBluetoothManagerPackage;
 import com.learnium.RNDeviceInfo.RNDeviceInfo;
@@ -27,6 +32,11 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNLanguagesPackage(),
+            new RNI18nPackage(),
+            new RNFSPackage(),
+            new BeaconsAndroidPackage(),
+            new ReactNativePushNotificationPackage(),
             new RNExitAppPackage(),
             new RNBluetoothManagerPackage(),
             new RNDeviceInfo(),

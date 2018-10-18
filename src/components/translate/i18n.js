@@ -1,4 +1,4 @@
-import I18n from 'react-native-i18n';
+import I18n from 'i18n-js';
 import DeviceInfo from 'react-native-device-info';
 
 
@@ -18,6 +18,10 @@ I18n.translations = {
     museum: "Museus",
     church: "Igrejas",
     other: "Outros Locais",
+    pt: 'Português',
+    gb: 'Inglês',
+    fr: 'Francês',
+    de: 'Alemão'
   },
   en: {
     map: 'Map',
@@ -26,6 +30,10 @@ I18n.translations = {
     museum: "Museum",
     church: "Church",
     other: "Other Places",
+    pt: 'Portuguese',
+    gb: 'English',
+    fr: 'French',
+    de: 'German'
   },
   fr: {
     map: 'Carte',
@@ -34,6 +42,10 @@ I18n.translations = {
     museum: "Musée",
     church: "Église",
     other: "D'autres lieux",
+    pt: 'Portugais',
+    gb: 'Anglais',
+    fr: 'Français',
+    de: 'Allemand'
   },
   de: {
     map: 'Karte',
@@ -42,6 +54,10 @@ I18n.translations = {
     museum: "Museum",
     church: "Kirche",
     other: "Andere Orte",
+    pt: 'Portugiesisch',
+    gb: 'Englisch',
+    fr: 'Französisch',
+    de: 'Deutsche'
   }
 };
 

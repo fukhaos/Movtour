@@ -10,10 +10,10 @@ import{
 	AsyncStorage
 } from 'react-native';
 import {Tile, List, ListItem, Icon, Button} from 'react-native-elements';
-import Swiper from 'react-native-swiper';
+// import Swiper from 'react-native-swiper';
 import RNFS from 'react-native-fs';
 import HTMLView from 'react-native-htmlview';
-import Modal from 'react-native-modalbox';
+// import Modal from 'react-native-modalbox';
 import ActionButton from 'react-native-action-button';
 import I18n from './translate/i18n';
 
