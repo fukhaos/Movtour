@@ -8,7 +8,7 @@ import Monument from './src/components/Monument';
 import MonumentDetails from './src/components/MonumentDetails';
 import DrawerMenu from './src/components/DrawerMenu';
 // import SinglePointMap from './src/components/SinglePointMap';
-// import MultiPointMap from './src/components/MultiPointMap';
+import MultiPointMap from './src/components/MultiPointMap';
 // import Tabs from './src/components/Tabs';
 // import Teste from './src/components/Teste';
 
@@ -141,35 +141,35 @@ const Stack = createStackNavigator({
   //
   //   },
   // },
-  // MultiPointMap:{
-  //   screen: MultiPointMap,
-  //   // navigationOptions: ({ navigation }) => ({
-  //   navigationOptions: {
-  //
-  //     // title:'Voltar atrás',
-  //
-  //     headerStyle:{
-  //       height:40,
-  //       backgroundColor:'#075e54',
-  //     },
-  //
-  //     headerTitleStyle:{
-  //       fontSize: 14,
-  //       fontWeight: 'normal',
-  //     },
-  //
-  //     headerTintColor:'#fff',
-  //
-  //     // headerRight:(
-  //     //   <Icon
-  //     //     name='home'
-  //     //     color='white'
-  //     //     size={36}
-  //     //     onPress={() => navigation.navigate('Homepage')} />
-  //     // )
-  //
-  //   },
-  // }
+  MultiPointMap:{
+    screen: MultiPointMap,
+    // navigationOptions: ({ navigation }) => ({
+    navigationOptions: {
+
+      // title:'Voltar atrás',
+
+      headerStyle:{
+        height:40,
+        backgroundColor:'#075e54',
+      },
+
+      headerTitleStyle:{
+        fontSize: 14,
+        fontWeight: 'normal',
+      },
+
+      headerTintColor:'#fff',
+
+      // headerRight:(
+      //   <Icon
+      //     name='home'
+      //     color='white'
+      //     size={36}
+      //     onPress={() => navigation.navigate('Homepage')} />
+      // )
+
+    },
+  }
 });
 
 const Drawer = createDrawerNavigator({

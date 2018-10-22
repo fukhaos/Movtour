@@ -67,6 +67,7 @@
 		E418D6D7CCBF40CB9CAEF3B6 /* libRNBluetoothManager.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD70DB0994334AAC904DA0F5 /* libRNBluetoothManager.a */; };
 		EA1902E38732451D83297040 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52A6C3E4FAC74636B888CEBC /* Feather.ttf */; };
 		F2BC04D3E0D743519F2309C5 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F7B681A203F4F3FA96E8416 /* AntDesign.ttf */; };
+		F92A40F71C1B0DD8AD1145EF /* libPods-Movtour.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D0BE5D954482E18867F3EC3 /* libPods-Movtour.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -474,7 +475,9 @@
 		00E356EE1AD99517003FC87E /* MovtourTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MovtourTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* MovtourTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MovtourTests.m; sourceTree = "<group>"; };
+		06DFC6BDF83A8EE8E1508842 /* Pods-Movtour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movtour.release.xcconfig"; path = "Pods/Target Support Files/Pods-Movtour/Pods-Movtour.release.xcconfig"; sourceTree = "<group>"; };
 		0C3361490E8D4148A5321597 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		0D0BE5D954482E18867F3EC3 /* libPods-Movtour.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Movtour.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13306011054844B6AA2252CA /* libRNVectorIcons-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNVectorIcons-tvOS.a"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
@@ -519,6 +522,7 @@
 		BD6315F4216F93A3006463FF /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		BD9C7B0A216E5531004BD78A /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		BF2FA364059544D69A66E331 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		C7F621EEF2209C86111E4BE2 /* Pods-Movtour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movtour.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Movtour/Pods-Movtour.debug.xcconfig"; sourceTree = "<group>"; };
 		D8A8153BDF4B48B8A4057E93 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		DA00E2C9A59343778F563484 /* RNLanguages.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNLanguages.xcodeproj; path = "../node_modules/react-native-languages/ios/RNLanguages.xcodeproj"; sourceTree = "<group>"; };
 		DD70DB0994334AAC904DA0F5 /* libRNBluetoothManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBluetoothManager.a; sourceTree = "<group>"; };
@@ -565,6 +569,7 @@
 				1DD43C13968B4FC1B834EBC4 /* libRNFS.a in Frameworks */,
 				A149E51641714F45AB7A8928 /* libRNI18n.a in Frameworks */,
 				927B08D9755445B1933F6635 /* libRNLanguages.a in Frameworks */,
+				F92A40F71C1B0DD8AD1145EF /* libPods-Movtour.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -718,6 +723,7 @@
 			isa = PBXGroup;
 			children = (
 				2D16E6891FA4F8E400B85C8A /* libReact.a */,
+				0D0BE5D954482E18867F3EC3 /* libPods-Movtour.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -788,6 +794,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				FA9A26A20AE1452E8F0C48C0 /* Resources */,
 				BD9C7AB8216E5399004BD78A /* Recovered References */,
+				C025252A4F3AE469861D0DD4 /* Pods */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -920,6 +927,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C025252A4F3AE469861D0DD4 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C7F621EEF2209C86111E4BE2 /* Pods-Movtour.debug.xcconfig */,
+				06DFC6BDF83A8EE8E1508842 /* Pods-Movtour.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		FA9A26A20AE1452E8F0C48C0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -967,10 +983,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Movtour" */;
 			buildPhases = (
+				A499BFABDCE8C6E0586917E3 /* [CP] Check Pods Manifest.lock */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				5D1CCDCAD628CAEF16D70DA5 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1618,6 +1636,50 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
+		5D1CCDCAD628CAEF16D70DA5 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-Movtour/Pods-Movtour-resources.sh",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Resources/GoogleMaps.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleMaps.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-Movtour/Pods-Movtour-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		A499BFABDCE8C6E0586917E3 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Movtour-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -1774,6 +1836,7 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C7F621EEF2209C86111E4BE2 /* Pods-Movtour.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
@@ -1803,6 +1866,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 06DFC6BDF83A8EE8E1508842 /* Pods-Movtour.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CURRENT_PROJECT_VERSION = 1;
