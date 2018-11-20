@@ -18,6 +18,7 @@ import {
   Platform
 } from 'react-native';
 
+import { inject, observer } from 'mobx-react';
 import { Icon } from 'react-native-elements';                         //done
 import moment from 'moment';                                          //done
 import PushNotification from 'react-native-push-notification';        //done
@@ -33,8 +34,8 @@ import I18n from './translate/i18n';
 import Flag from 'react-native-round-flags';                          //done
 import RNExitApp from 'react-native-exit-app';                        //done
 
-
-
+@inject('store')
+@observer
 export default class Homepage extends Component {
 
   state = {
@@ -60,7 +61,6 @@ export default class Homepage extends Component {
 
   componentWillMount() {
     RNFS.mkdir(RNFS.DocumentDirectoryPath+ '/images/');
-
     // Beacons.requestWhenInUseAuthorization();
     // Beacons.requestAlwaysAuthorization();
 
@@ -82,15 +82,15 @@ export default class Homepage extends Component {
     //   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
 
     //Vai buscar a linguagem à memória
-    AsyncStorage.getItem('@Language', (err, value) => {
-			if (err) {
-				console.log("Error getting Language: ", err);
-			} else if (!value) {
-					console.log("Key: @Language não possui dados");
-			} else {
-        I18n.locale = JSON.parse(value);
-			}
-		});
+    // AsyncStorage.getItem('@Language', (err, value) => {
+		// 	if (err) {
+		// 		console.log("Error getting Language: ", err);
+		// 	} else if (!value) {
+		// 			console.log("Key: @Language não possui dados");
+		// 	} else {
+    //     I18n.locale = JSON.parse(value);
+		// 	}
+		// });
   }
 
   componentDidMount(){
@@ -733,6 +733,7 @@ export default class Homepage extends Component {
     console.log("DADOS: ", this.state.data);
     const { navigate } = this.props.navigation;
     const window = Dimensions.get('window');
+    // const { locale } = this.props.store;
     // console.log('Images Downloaded: ', this.state.imagesDownloaded);
     // console.log('Total of Images: ', this.state.totalOfImages);
 

@@ -9,6 +9,8 @@ import{
 	StatusBar,
 	AsyncStorage
 } from 'react-native';
+
+import { observer, inject } from 'mobx-react';
 import {Tile, List, ListItem, Icon, Button} from 'react-native-elements';
 // import Swiper from 'react-native-swiper';
 import RNFS from 'react-native-fs';
@@ -17,6 +19,8 @@ import HTMLView from 'react-native-htmlview';
 import ActionButton from 'react-native-action-button';
 import I18n from './translate/i18n';
 
+@inject('store')
+@observer
 export default class MonumentDetails extends Component{
 
 	state = {
@@ -31,20 +35,6 @@ export default class MonumentDetails extends Component{
     }
 	}
 
-	componentWillMount(){
-    AsyncStorage.getItem('@Profile', (err, value) => {
-			if (err) {
-				console.log("Error getting Profile: ", err);
-			} else if (!value) {
-					console.log("Key: @Profile não possui dados");
-			} else {
-				this.setState({description_type_position: JSON.parse(value)});
-				// console.log('Value: ', value);
-				// console.log('ValueParsed: ', JSON.parse(value));
-			}
-		});
-	}
-
 	async saveUserProfile(value){
     try {
       await AsyncStorage.setItem('@Profile', JSON.stringify(value));
@@ -55,32 +45,33 @@ export default class MonumentDetails extends Component{
   }
 
 	descriptionByLocale(poi){
+		const {description_type_position} = this.props.store;
 		switch(I18n.locale){
 			case 'pt-PT':
 				return(
 					<HTMLView
-						value={poi.poi_descriptions[this.state.description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[this.state.description_type_position-1].description_pt}
+						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_pt}
 						stylesheet={styles}
 					/>
 				);
 			case 'en-GB':
 				return(
 					<HTMLView
-						value={poi.poi_descriptions[this.state.description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[this.state.description_type_position-1].description_en}
+						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_en}
 						stylesheet={styles}
 					/>
 				);
 			case 'fr-FR':
 				return(
 					<HTMLView
-						value={poi.poi_descriptions[this.state.description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[this.state.description_type_position-1].description_fr}
+						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_fr}
 						stylesheet={styles}
 					/>
 				);
 			case 'de-DE':
 				return(
 					<HTMLView
-						value={poi.poi_descriptions[this.state.description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[this.state.description_type_position-1].description_de}
+						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_de}
 						stylesheet={styles}
 					/>
 				);

@@ -1,12 +1,25 @@
+import{ AsyncStorage } from 'react-native';
 import I18n from 'i18n-js';
 import DeviceInfo from 'react-native-device-info';
 
 
-if (DeviceInfo.getDeviceLocale() == "pt-PT" || DeviceInfo.getDeviceLocale() == "en-GB" || DeviceInfo.getDeviceLocale() == "fr-FR" || DeviceInfo.getDeviceLocale() == "de-DE") {
-  I18n.defaultLocale = DeviceInfo.getDeviceLocale();
-} else {
-  I18n.defaultLocale = "en-GB";
-}
+AsyncStorage.getItem('@Language', (err, value) => {
+  if (err) {
+    console.log("Error getting Language: ", err);
+  } else if (!value) {
+    if (DeviceInfo.getDeviceLocale() == "pt-PT" || DeviceInfo.getDeviceLocale() == "en-GB" || DeviceInfo.getDeviceLocale() == "fr-FR" || DeviceInfo.getDeviceLocale() == "de-DE") {
+      I18n.defaultLocale = DeviceInfo.getDeviceLocale();
+      console.log("Entrou 1");
+    } else {
+      I18n.defaultLocale = "en-GB";
+      console.log("Entrou 2");
+    }
+  } else {
+    I18n.defaultLocale = (JSON.parse(value));
+    console.log("Entrou 3");
+  }
+});
+
 
 I18n.fallbacks = true;
 

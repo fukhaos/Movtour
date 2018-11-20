@@ -5,7 +5,6 @@ import android.app.Application;
 import com.facebook.react.ReactApplication;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.reactcommunity.rnlanguages.RNLanguagesPackage;
-import com.AlexanderZaytsev.RNI18n.RNI18nPackage;
 import com.rnfs.RNFSPackage;
 import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.dieam.reactnativepushnotification.ReactNativePushNotificationPackage;
@@ -35,7 +34,6 @@ public class MainApplication extends Application implements ReactApplication {
           new MainReactPackage(),
             new MapsPackage(),
             new RNLanguagesPackage(),
-            new RNI18nPackage(),
             new RNFSPackage(),
             new BeaconsAndroidPackage(),
             new ReactNativePushNotificationPackage(),
