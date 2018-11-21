@@ -8,15 +8,12 @@ AsyncStorage.getItem('@Language', (err, value) => {
     console.log("Error getting Language: ", err);
   } else if (!value) {
     if (DeviceInfo.getDeviceLocale() == "pt-PT" || DeviceInfo.getDeviceLocale() == "en-GB" || DeviceInfo.getDeviceLocale() == "fr-FR" || DeviceInfo.getDeviceLocale() == "de-DE") {
-      I18n.defaultLocale = DeviceInfo.getDeviceLocale();
-      console.log("Entrou 1");
+      I18n.locale = DeviceInfo.getDeviceLocale();
     } else {
-      I18n.defaultLocale = "en-GB";
-      console.log("Entrou 2");
+      I18n.locale = "en-GB";
     }
   } else {
-    I18n.defaultLocale = (JSON.parse(value));
-    console.log("Entrou 3");
+    I18n.locale = (JSON.parse(value));
   }
 });
 

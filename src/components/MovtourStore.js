@@ -14,7 +14,6 @@ class MovtourStore {
     } catch (error) {
       console.log("Error saving language -> " + error);
     }
-    console.log(this.locale);
   }
 
   @action descriptionType(value){

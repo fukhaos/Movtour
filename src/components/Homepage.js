@@ -688,26 +688,6 @@ export default class Homepage extends Component {
       })
   }
 
-  async saveUserProfile(value){
-    try {
-      await AsyncStorage.setItem('@Profile', JSON.stringify(value));
-      console.log("@Profile salvo");
-    } catch (error) {
-      console.log("Error saving user profile -> " + error);
-    }
-  }
-
-  async saveLanguage(value){
-    I18n.locale = value;
-    this.setState({})
-    try {
-      await AsyncStorage.setItem('@Language', JSON.stringify(value));
-      console.log("@Language saved");
-    } catch (error) {
-      console.log("Error saving language -> " + error);
-    }
-  }
-
   showButtons(){
     if (this.state.showProgressBar == false && this.state.showSpinner == false) {
       return true
@@ -733,87 +713,12 @@ export default class Homepage extends Component {
     console.log("DADOS: ", this.state.data);
     const { navigate } = this.props.navigation;
     const window = Dimensions.get('window');
-    // const { locale } = this.props.store;
+    const { locale } = this.props.store;
     // console.log('Images Downloaded: ', this.state.imagesDownloaded);
     // console.log('Total of Images: ', this.state.totalOfImages);
 
     return (
       <ImageBackground source={require('../config/pictures/tomar_centro.jpg')} style={styles.container}>
-
-        <ActionButton
-          buttonColor="rgba(0,0,0,0.1)"
-          bgColor="rgba(0,0,0,0.5)"
-          offsetY={10}
-          offsetX={10}
-          verticalOrientation="down"
-          useNativeFeedback={false}
-          style={{zIndex: 999}}
-          renderIcon={() => <Icon type="ionicon" color="white" size={36} name="md-settings" style={styles.actionButtonIcon} />}
-        >
-          {this.state.data.categories == undefined ? console.log('') : this.state.data.categories.map(dscp => (
-            <ActionButton.Item
-              key={dscp.id}
-              buttonColor='rgb(7, 94, 84)'
-              title={this.descriptionTypes_languages(dscp)}
-              useNativeFeedback={false}
-              onPress={() => this.saveUserProfile(dscp.position)}
-            >
-              <Icon type="font-awesome" color="white" name="user" style={styles.actionButtonIcon} />
-            </ActionButton.Item>
-          ))}
-        </ActionButton>
-
-        <ActionButton
-          buttonColor="rgba(0,0,0,0.1)"
-          bgColor="rgba(0,0,0,0.5)"
-          offsetY={10}
-          offsetX={80}
-          verticalOrientation="down"
-          style={{zIndex: 999}}
-          useNativeFeedback={false}
-          renderIcon={() => <Icon type="feather" color="white" size={36} name="flag" style={styles.actionButtonIcon} />}
-        >
-          <ActionButton.Item
-            key={'pt'}
-            buttonColor='transparent'
-            title={'PT'}
-            useNativeFeedback={false}
-            onPress={() => this.saveLanguage('pt-PT')}
-          >
-            <Flag code="PT" style={styles.flag} />
-          </ActionButton.Item>
-
-          <ActionButton.Item
-            key={'en'}
-            buttonColor='transparent'
-            title={'EN'}
-            useNativeFeedback={false}
-            onPress={() => this.saveLanguage('en-GB')}
-          >
-            <Flag code="GB" style={styles.flag} />
-          </ActionButton.Item>
-
-          <ActionButton.Item
-            key={'fr'}
-            buttonColor='transparent'
-            title={'FR'}
-            useNativeFeedback={false}
-            onPress={() => this.saveLanguage('fr-FR')}
-          >
-            <Flag code="FR" style={styles.flag} />
-          </ActionButton.Item>
-
-          <ActionButton.Item
-            key={'de'}
-            buttonColor='transparent'
-            title={'DE'}
-            useNativeFeedback={false}
-            onPress={() => this.saveLanguage('de-DE')}
-          >
-            <Flag code="DE" style={styles.flag} />
-          </ActionButton.Item>
-
-        </ActionButton>
 
         <View style={styles.titulo}>
           <Text style={styles.tituloText}><Text style={styles.titutoTextM}>M</Text>ovtour</Text>

@@ -14,8 +14,7 @@ import { NavigationEvents } from 'react-navigation';
 export default class DrawerMenu extends React.Component {
 
   state = {
-    data: [],
-    description_type_position: 1,
+    data: []
   }
   componentDidMount() {
     AsyncStorage.getItem('@Data',(err, dados) => {
@@ -55,18 +54,11 @@ export default class DrawerMenu extends React.Component {
 
   saveUserProfile(value){
     this.props.store.descriptionType(value);
-
-    try {
-      AsyncStorage.setItem('@Profile', JSON.stringify(value));
-      console.log("@Profile salvo");
-    } catch (error) {
-      console.log("Error saving user profile -> " + error);
-    }
   }
 
   render() {
     const { navigate } = this.props.navigation;
-    const { description_type_position } = this.props.store;
+    const { description_type_position, locale } = this.props.store;
     console.log("I18n: ", I18n.locale);
     return (
       <SafeAreaView style={styles.safeArea}>
