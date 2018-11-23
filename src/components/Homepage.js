@@ -15,7 +15,8 @@ import {
   Button,
   BackHandler,
   AppState,
-  Platform
+  Platform,
+  PermissionsAndroid
 } from 'react-native';
 
 import { inject, observer } from 'mobx-react';
@@ -68,30 +69,8 @@ export default class Homepage extends Component {
     this.beaconInUse = value;
   }
 
-  // state = {
-  //   showProgressBar: true,
-  //   totalOfImages:0,
-  //   imagesDownloaded:0,
-  //   progressBar:0,
-  //   showSpinner: true,
-  //   willDownload: false,
-  //   movtourBeacons: [],
-  //   detectedBeacons: [],
-  //   visitedBeacons: [],
-  //   beaconsToDelete: [],
-  //   visitedPOIs: [],
-  //   poisToDelete: [],
-  //   beaconInUse:null,
-  //   closerBeacon:null,
-  //   data: [],
-  //   homepageKey: '',
-  //   appState: AppState.currentState,
-  //   date_time: 0,
-  // }
-
   componentWillMount() {
     RNFS.mkdir(RNFS.DocumentDirectoryPath+ '/images/');
-
     // Para limpar os dados guardados no AsyncStorage, descomentar a próxima linha.
     // AsyncStorage.clear();
 
@@ -99,9 +78,19 @@ export default class Homepage extends Component {
     // Beacons.requestWhenInUseAuthorization();
     // Beacons.requestAlwaysAuthorization();
 
-    // if(Platform.OS === 'android'){
-      // Beacons.detectIBeacons();
-    // }
+    if(Platform.OS === 'android'){
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION;
+      Beacons.detectIBeacons();
+      Beacons
+        .startRangingBeaconsInRegion({identifier: 'Tomar', uuid:null})
+        .then(() => console.log('Beacons ranging started succesfully'))
+        .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+
+      Beacons
+        .startMonitoringForRegion({identifier: 'Tomar', uuid:null})
+        .then(() => console.log('Beacons monitoring started succesfully'))
+        .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+    }
 
     // Beacons.startUpdatingLocation();
     // Beacons.setBackgroundScanPeriod(3´0000);
@@ -115,23 +104,11 @@ export default class Homepage extends Component {
       // .startRangingBeaconsInRegion({identifier: 'Tomar', uuid:null})
     //   .then(() => console.log('Beacons ranging started succesfully'))
     //   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-
-    //Vai buscar a linguagem à memória
-    // AsyncStorage.getItem('@Language', (err, value) => {
-		// 	if (err) {
-		// 		console.log("Error getting Language: ", err);
-		// 	} else if (!value) {
-		// 			console.log("Key: @Language não possui dados");
-		// 	} else {
-    //     I18n.locale = JSON.parse(value);
-		// 	}
-		// });
   }
 
   componentDidMount(){
     const {navigate} = this.props.navigation;
     this.date_time = Date.now()%5000;
-
     // -- FETCHING DATA ---------------------------------------------- FETCHING DATA --
     fetch('http://movtour.ipt.pt/monuments.json', {timeout: 10 * 1000})
       .then(res => res.json())
@@ -164,6 +141,7 @@ export default class Homepage extends Component {
       DeviceEventEmitter.addListener('beaconsDidRange',(data) => {
           // let date = moment().add(1000, 's');
           // Se for detectado algum beacon, verifica se é dos Movtour e encontra qual o mais próximo, adicionando-o à variável closerBeacon.
+          console.log("Beacons detetados: ", data.beacons);
           if (data.beacons.length > 0){
             let movtourBeacons = data.beacons.filter(beacon => this.movtourBeacons.includes(beacon.uuid));
             this.detectedBeacons = movtourBeacons;
@@ -171,9 +149,9 @@ export default class Homepage extends Component {
             // Encontra o beacon que está mais perto
             let tempBeacon = movtourBeacons.find(x=> x.distance == Math.min(...movtourBeacons.map( y => y.distance)));
 
-            // if (tempBeacon != null){
-            //   console.log("Beacon mais perto:", tempBeacon.uuid, tempBeacon.distance);
-            // }
+            if (tempBeacon != null){
+              console.log("Beacon mais perto:", tempBeacon.uuid, tempBeacon.distance);
+            }
 
             // movtourBeacons.map(x => {
             //   this.state.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
@@ -280,9 +258,6 @@ export default class Homepage extends Component {
     if (data.monuments != undefined) {
       data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
         this.movtourBeacons.push(b.uuid);
-        // this.setState({
-        //   movtourBeacons: [...this.state.movtourBeacons, b.uuid]
-        // })
       })))
     }
   }
@@ -418,10 +393,7 @@ export default class Homepage extends Component {
                   console.log("Erro ao descarregar imagem do PoI. ", error);
                   resolve();
                 })
-            } else {
-              console.log(`Falseeee`)
-              resolve();
-            }
+            } else resolve();
           })
           .catch((err) => {
             console.log('Erro a salvar as imagens dos PoIs. ', err);
@@ -724,11 +696,12 @@ export default class Homepage extends Component {
     const { data, locale } = this.props.store;
     const window = Dimensions.get('window');
     console.log("DADOS: ", data);
-    console.log('Images Downloaded: ', this.imagesDownloaded);
-    console.log('Total of Images: ', this.totalImages);
-    console.log('Progress: ', this.progressCircle);
-    console.log('Show Progress: ', this.showProgressCircle);
-    console.log('Spinner: ', this.showSpinner);
+    console.log("Movtour Beacons: ", this.movtourBeacons);
+    // console.log('Images Downloaded: ', this.imagesDownloaded);
+    // console.log('Total of Images: ', this.totalImages);
+    // console.log('Progress: ', this.progressCircle);
+    // console.log('Show Progress: ', this.showProgressCircle);
+    // console.log('Spinner: ', this.showSpinner);
 
     return (
       <ImageBackground source={require('../config/pictures/tomar_centro.jpg')} style={styles.container}>
