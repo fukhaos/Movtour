@@ -26,7 +26,7 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
   render() {
-    YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle']);
+    YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle', 'Attempted to invoke']);
     return (
       <Provider store={store}>
         <Drawer />

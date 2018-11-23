@@ -19,6 +19,7 @@ import {
 } from 'react-native';
 
 import { inject, observer } from 'mobx-react';
+import { action, computed, observable } from 'mobx';
 import { Icon } from 'react-native-elements';                         //done
 import moment from 'moment';                                          //done
 import PushNotification from 'react-native-push-notification';        //done
@@ -37,6 +38,32 @@ import RNExitApp from 'react-native-exit-app';                        //done
 @inject('store')
 @observer
 export default class Homepage extends Component {
+  // VARIABLES
+  @observable showProgressCircle= true;
+  @observable progressCircle= 0;
+  @observable showSpinner = true;
+  @observable willDownload = false;
+  @observable appState = AppState.currentState;
+  @observable movtourBeacons = [];
+  @observable totalImages = 0;
+  @observable imagesDownloaded = 0;
+  @observable detectedBeacons = [];
+  @observable closerBeacon = null;
+  @observable date_time = 0;
+
+
+  // ACTIONS
+  @action.bound incrementTotalImages(){
+    this.totalImages++;
+  }
+
+  @action.bound incrementImagesDownloaded(){
+    this.imagesDownloaded++;
+  }
+
+  // @action pushBeacon(){
+  //
+  // }
 
   state = {
     showProgressBar: true,
@@ -61,6 +88,11 @@ export default class Homepage extends Component {
 
   componentWillMount() {
     RNFS.mkdir(RNFS.DocumentDirectoryPath+ '/images/');
+
+    // Para limpar os dados guardados no AsyncStorage descomentar a próxima linha
+    // AsyncStorage.clear();
+
+
     // Beacons.requestWhenInUseAuthorization();
     // Beacons.requestAlwaysAuthorization();
 
@@ -95,16 +127,14 @@ export default class Homepage extends Component {
 
   componentDidMount(){
     const {navigate} = this.props.navigation;
-
+    this.date_time = Date.now()%5000;
     //Guardar chave da componente
-    this.setState({
-      homepageKey: this.props.navigation.state.key,
-      date_time: Date.now()%5000
-    });
+    // this.setState({
+    //   date_time: Date.now()%5000
+    // });
 
     // -- FETCHING DATA ---------------------------------------------- FETCHING DATA --
     fetch('http://movtour.ipt.pt/monuments.json', {timeout: 10 * 1000})
-    // fetch('http://movtour.ipt.pt/monuments.json', {timeout: 10 * 1000})
       .then(res => res.json())
       .then(res => {
         if(res.status == 500) {
@@ -118,14 +148,7 @@ export default class Homepage extends Component {
           )
           this.getSavedData();
         } else {
-          this.setState({data: res})
-          // Vai guardar os dados na memória do telemóvel
-          try {
-            AsyncStorage.setItem('@Data', JSON.stringify(res));
-            console.log("@Data saved");
-          } catch (error) {
-            console.log("Error saving data -> " + error);
-          }
+          this.props.store.changeData(res)
           this.deleteImages();
           this.saveImages();
         }
@@ -143,8 +166,8 @@ export default class Homepage extends Component {
           // let date = moment().add(1000, 's');
           // Se for detectado algum beacon, verifica se é dos Movtour e encontra qual o mais próximo, adicionando-o à variável closerBeacon.
           if (data.beacons.length > 0){
-            let movtourBeacons = data.beacons.filter(beacon => this.state.movtourBeacons.includes(beacon.uuid));
-            this.setState({detectedBeacons: movtourBeacons});
+            let movtourBeacons = data.beacons.filter(beacon => this.movtourBeacons.includes(beacon.uuid));
+            this.detectedBeacons = movtourBeacons;
 
             // Encontra o beacon que está mais perto
             let tempBeacon = movtourBeacons.find(x=> x.distance == Math.min(...movtourBeacons.map( y => y.distance)));
@@ -164,25 +187,27 @@ export default class Homepage extends Component {
             // })
 
 
-            if(!this.state.closerBeacon || tempBeacon.distance < this.state.closerBeacon.distance){
-              if (this.state.data.monuments !== undefined){
-                this.state.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
+            if(!this.closerBeacon || tempBeacon.distance < this.closerBeacon.distance){
+              if (this.props.store.data.monuments !== undefined){
+                this.props.store.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
 
                   if (tempBeacon.uuid == b.uuid){
                     let poi_id = j.id;
-                    this.setState({
-                      closerBeacon:{uuid: tempBeacon.uuid, poi: poi_id}
-                    });
+                    this.closerBeacon = [{uuid: tempBeacon.uuid, poi: poi_id}];
+                    // this.setState({
+                    //   closerBeacon:{uuid: tempBeacon.uuid, poi: poi_id}
+                    // });
                   }
                 })))
 
               }
             }
           } else { //Se não for detectado nada atualiza a variavel detectedBeacons
-            this.setState({detectedBeacons: null});
+            this.detectedBeacons = null;
+            // this.setState({detectedBeacons: null});
           }
 
-          if (this.state.appState.match(/inactive|background/)){
+          if (this.appState.match(/inactive|background/)){
             if (this.state.date_time > Date.now()%5000 - 500 && this.state.date_time < Date.now()%5000 + 500) {
               this.sendNotification();
             }
@@ -191,7 +216,7 @@ export default class Homepage extends Component {
       });
 
       // X segundos em X segundos abre o openPOI
-      if (this.state.appState.match(/active/)){
+      if (this.appState.match(/active/)){
         setInterval(() => {
           this.openPOI();
         }, 5000);
@@ -242,35 +267,38 @@ export default class Homepage extends Component {
 
   //Se o estado da app (foreground/background/inactive) mudar, atualizar a variável 'appState'
   _handleAppStateChange = (nextAppState) => {
-    if (this.state.appState.match(/inactive|background/) && nextAppState === 'active') {
+    if (this.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
     }
 
-    this.setState({appState: nextAppState});
+    this.appState = nextAppState;
+    // this.setState({appState: nextAppState});
   }
 
   getMovtourBeacons(){
+    const { data } = this.props.store;
     // Cria um array com todos os beacons do Movtour
-    if (this.state.data.monuments != undefined) {
-      this.state.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
-        this.setState({
-          movtourBeacons: [...this.state.movtourBeacons, b.uuid]
-        })
+    if (data.monuments != undefined) {
+      data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
+        this.movtourBeacons.push(b.uuid);
+        // this.setState({
+        //   movtourBeacons: [...this.state.movtourBeacons, b.uuid]
+        // })
       })))
     }
   }
 
   deleteImages(){
-    console.log('DATA: ', this.state.data);
+    const { data } = this.props.store;
     return (
-      RNFS.readDir(RNFS.DocumentDirectoryPath + '/images/')
+      RNFS.readDir(`${RNFS.DocumentDirectoryPath}/images/`)
       .then( result => {
         // console.log('RNFS dir:', result);
         if (result.length){
           result.map((r, index) => {
             let sum = false;
-            let imgMonuments = this.state.data.monuments.filter(i => (i.cover_image_md5 + '.jpg') === r.name);
-            let imgPois = this.state.data.monuments.map(i => i.pois.filter(j => (j.cover_image_md5 + '.jpg') === r.name));
+            let imgMonuments = data.monuments.filter(i => (`${i.cover_image_md5}.jpg`) === r.name);
+            let imgPois = data.monuments.map(i => i.pois.filter(j => (`${j.cover_image_md5}.jpg`) === r.name));
 
             if (imgMonuments.length > 0) {
               sum = true
@@ -301,90 +329,108 @@ export default class Homepage extends Component {
   } //fim do deleteImages
 
   saveImages(){
-    const x = this.state.data.monuments.length-1;
-    const y = this.state.data.monuments[x].pois.length-1;
-    // console.log("x: ", x, "; y:", y);
-    return (
-      this.state.data.monuments.map((i, indexMonuments) => {
-        if (i.cover_image_md5 != undefined) {
+    const { data } = this.props.store;
+    const x = data.monuments.length-1;
+    const y = data.monuments[x].pois.length-1;
+    let promises = [];
+    data.monuments.map((i) => {
+      promises.push(this.getMonumentImages(i));
+      i.pois.map((k) => {
+        promises.push(this.getPoiImages(k));
+      });
+    });
 
-        RNFS.exists(RNFS.DocumentDirectoryPath + '/images/' + i.cover_image_md5 + '.jpg')
-          .then( success => {
-            if (success == false){ // Se a imagem ainda não existir
-              console.log("Vai gravar a imagem do monumento: ", i.cover_image_md5);
-              this.setState({totalOfImages: this.state.totalOfImages+1, willDownload: true, showSpinner:false})
+    Promise.all(promises).then(
+      ()=>{
+        // So entra aqui se já tiver percorrido todo o array (data) e não houver downloads para fazer
+        if(this.willDownload == false){
+          this.showSpinner = false;
+          this.showProgressCircle = false;
+          this.getMovtourBeacons();
+        }
+      }, error => console.log("ERRRRO: ", error));
+
+  } //fim do saveImages
+
+  getMonumentImages(i){
+    return new Promise((resolve, reject)=>{
+      if (i.cover_image_md5 != undefined) {
+
+      RNFS.exists(`${RNFS.DocumentDirectoryPath}/images/${i.cover_image_md5}.jpg`)
+        .then( success => {
+          if (success == false){ // Se a imagem ainda não existir
+            console.log("Vai gravar a imagem do monumento: ", i.cover_image_md5);
+            this.incrementTotalImages();
+            this.willDownload = true;
+            this.showSpinner = false;
+            RNFS.downloadFile({
+              fromUrl: i.cover_image,
+              toFile: `${RNFS.DocumentDirectoryPath}/images/${i.cover_image_md5}.jpg`
+            }).promise.then(r => {
+                console.log('Resposta ao guardar imagem do monumento: ', r);
+                this.incrementImagesDownloaded();
+                this.progressCircle = this.imagesDownloaded/this.totalImages;
+                if(this.imagesDownloaded >= this.totalImages-1){
+                  this.showProgressCircle = false;
+                  this.willDownload = false;
+                  this.getMovtourBeacons();
+                }
+                resolve();
+              })
+              .catch((error) => {
+                console.log("Erro ao descarregar imagem do monumento: ", error);
+                resolve();
+              })
+          } else resolve();
+        })
+        .catch((err) => {
+          console.log('Erro a salvar as imagens dos Monumentos: ', err);
+          resolve();
+        });
+      } else resolve();
+    });
+  }
+
+  getPoiImages(k){
+    return new Promise((resolve,reject)=>{
+      if (k.cover_image_md5 != undefined) {
+        RNFS.exists(`${RNFS.DocumentDirectoryPath}/images/${k.cover_image_md5}.jpg`)
+          .then((success) => {
+            if (success == false){
+              console.log("Vai gravar a imagem do poi: ", k.cover_image_md5);
+              this.incrementTotalImages();
+              this.willDownload = true;
+              this.showSpinner = false;
               RNFS.downloadFile({
-                fromUrl: i.cover_image,
-                toFile: `${RNFS.DocumentDirectoryPath}/images/`+ i.cover_image_md5 + `.jpg`,
+                fromUrl: k.cover_image,
+                toFile: `${RNFS.DocumentDirectoryPath}/images/${k.cover_image_md5}.jpg`
               }).promise.then(r => {
-                  console.log('Resposta ao guardar imagem do monumento: ', r);
-                  this.setState({
-                    imagesDownloaded: this.state.imagesDownloaded+1,
-                    progressBar:this.state.imagesDownloaded/this.state.totalOfImages
-                  })
-                  if(this.state.imagesDownloaded >= this.state.totalOfImages-1){
-                    this.setState({showProgressBar:false, willDownload: false})
-                    this.getMovtourBeacons();
-                  }
+                console.log('Resposta ao guardar imagem do poi: ', r);
+                this.incrementImagesDownloaded();
+                this.progressCircle = this.imagesDownloaded/this.totalImages;
+                if(this.imagesDownloaded >= this.totalImages-1){
+                  this.showProgressCircle = false;
+                  this.willDownload = false;
+                  this.getMovtourBeacons();
+                }
+                resolve();
                 })
                 .catch((error) => {
-                  console.log("Erro ao descarregar imagem do monumento: ", error);
+                  console.log("Erro ao descarregar imagem do PoI. ", error);
+                  resolve();
                 })
+            } else {
+              console.log(`Falseeee`)
+              resolve();
             }
           })
           .catch((err) => {
-            console.log('Erro a salvar as imagens dos Monumentos: ', err);
+            console.log('Erro a salvar as imagens dos PoIs. ', err);
+            resolve();
           });
-
-        }
-
-        i.pois.map((k, indexPois) => {
-          if (k.cover_image_md5 != undefined) {
-            RNFS.exists(RNFS.DocumentDirectoryPath + '/images/' + k.cover_image_md5 + '.jpg')
-              .then((success) => {
-                if (success == false){
-                  console.log("Vai gravar a imagem do poi: ", k.cover_image_md5);
-                  this.setState({totalOfImages: this.state.totalOfImages+1, willDownload: true, showSpinner:false})
-                  RNFS.downloadFile({
-                    fromUrl: k.cover_image,
-                    toFile: `${RNFS.DocumentDirectoryPath}/images/`+ k.cover_image_md5 + `.jpg`,
-                  }).promise.then(r => {
-                    console.log('Resposta ao guardar imagem do poi: ', r);
-                    this.setState({
-                      imagesDownloaded: this.state.imagesDownloaded+1,
-                      progressBar:this.state.imagesDownloaded/this.state.totalOfImages
-                    })
-                    if(this.state.imagesDownloaded >= this.state.totalOfImages-1 ){
-                      this.setState({showProgressBar:false, willDownload: false})
-                      this.getMovtourBeacons();
-                    }
-                    })
-                    .catch((error) => {
-                      console.log("Erro ao descarregar imagem do poi: ", error);
-                    })
-                }
-
-
-
-
-              })
-              .catch((err) => {
-                console.log('Erro a salvar as imagens dos Pois: ', err);
-              });
-          }
-          // console.log("indexMonuments: ", indexMonuments, "; indexPois: ", indexPois, "; poi: ", k.name);
-          // So entra aqui se já tiver percorrido todo o array (data) e não houver downloads para fazer
-          if(indexMonuments==x && indexPois==y && this.state.willDownload == false){
-            this.setState({showSpinner:false, showProgressBar: false})
-            this.getMovtourBeacons();
-          }
-
-        })
-
-
-      })
-    );
-  } //fim do saveImages
+      } else resolve();
+    });
+  }
 
   getSavedData(){
     return (
@@ -403,12 +449,10 @@ export default class Homepage extends Component {
             )
           } else {
             console.log('Vai carregar os dados que estão na memória')
-            const monuments = JSON.parse(dados)
-            this.setState({
-              data: monuments,
-              showProgressBar: false,
-              showSpinner: false,
-            })
+            // data = JSON.parse(dados);
+            this.props.store.data = JSON.parse(dados);
+            this.showProgressCircle = false;
+            this.showSpinner = false;
             this.getMovtourBeacons();
           }
         }
@@ -689,33 +733,23 @@ export default class Homepage extends Component {
   }
 
   showButtons(){
-    if (this.state.showProgressBar == false && this.state.showSpinner == false) {
+    if (this.showProgressCircle == false && this.showSpinner == false) {
       return true
     } else {
       return false
     }
   }
 
-  descriptionTypes_languages(dscp){
-    switch(I18n.locale){
-			case 'pt-PT':
-				return dscp.name_pt
-			case 'en-GB':
-				return dscp.name_en
-			case 'fr-FR':
-				return dscp.name_fr
-			case 'de-DE':
-				return dscp.name_de
-		}
-  }
-
   render(){
     console.log("DADOS: ", this.state.data);
     const { navigate } = this.props.navigation;
     const window = Dimensions.get('window');
-    const { locale } = this.props.store;
-    // console.log('Images Downloaded: ', this.state.imagesDownloaded);
-    // console.log('Total of Images: ', this.state.totalOfImages);
+    const { data, locale } = this.props.store;
+    console.log('Images Downloaded: ', this.imagesDownloaded);
+    console.log('Total of Images: ', this.totalImages);
+    console.log('Progress: ', this.progressCircle);
+    console.log('Show Progress: ', this.showProgressCircle);
+    console.log('Spinner: ', this.showSpinner);
 
     return (
       <ImageBackground source={require('../config/pictures/tomar_centro.jpg')} style={styles.container}>
@@ -724,17 +758,17 @@ export default class Homepage extends Component {
           <Text style={styles.tituloText}><Text style={styles.titutoTextM}>M</Text>ovtour</Text>
         </View>
 
-        <View style={styles.progressBar}>
-          <Display enable={this.state.showProgressBar}>
+        <View style={styles.progressCircle}>
+          <Display enable={this.showProgressCircle}>
             <Progress.Circle
-              progress={Number(this.state.progressBar)}
+              progress={Number(this.progressCircle)}
               color={'white'}
               borderWidth={4}
               borderColor={'white'}
               size={Dimensions.get('window').width/2}
               thickness={8}
-              indeterminate={this.state.showSpinner}
-              formatText={() => (this.state.progressBar * 100).toFixed(0) + '%'}
+              indeterminate={this.showSpinner}
+              formatText={() => (this.progressCircle * 100).toFixed(0) + '%'}
               showsText={true}
               textStyle={{color: 'white'}}
             />
@@ -761,7 +795,7 @@ export default class Homepage extends Component {
               </TouchableHighlight>
 
               <TouchableHighlight
-                onPress={() => navigate('Monument', {data:this.state.data})}
+                onPress={() => navigate('Monument', {data:data})}
                 style={styles.button}
                 underlayColor='#075e54'
               >
@@ -828,7 +862,7 @@ const styles = StyleSheet.create({
     textShadowOffset:{width:3, height:3}
   },
 
-  progressBar:{
+  progressCircle:{
     flex:2,
     justifyContent: 'center',
     alignItems:'center',

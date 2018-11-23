@@ -13,27 +13,6 @@ import { NavigationEvents } from 'react-navigation';
 @observer
 export default class DrawerMenu extends React.Component {
 
-  state = {
-    data: []
-  }
-  componentDidMount() {
-    AsyncStorage.getItem('@Data',(err, dados) => {
-      if(err) {
-        console.error('Error loading monuments', err)
-      } else {
-        if(!dados){
-          console.log('Os dados estão vazios');
-        } else {
-          console.log('Vai carregar os dados que estão na memória')
-          const monuments = JSON.parse(dados)
-          this.setState({
-            data: monuments,
-          })
-        }
-      }
-    })
-  }
-
   descriptionTypes_languages(dscp){
     switch(I18n.locale){
 			case 'pt-PT':
@@ -58,8 +37,7 @@ export default class DrawerMenu extends React.Component {
 
   render() {
     const { navigate } = this.props.navigation;
-    const { description_type_position, locale } = this.props.store;
-    console.log("I18n: ", I18n.locale);
+    const { data, description_type_position, locale } = this.props.store;
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
@@ -110,7 +88,7 @@ export default class DrawerMenu extends React.Component {
                 containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center', textAlign: 'center'}}
                 titleStyle={{color: 'white'}}
               />
-            {this.state.data.categories == undefined ? console.log('') : this.state.data.categories.map(dscp => (
+            {data.categories == undefined ? console.log('') : data.categories.map(dscp => (
               <ListItem
                 key={dscp.id}
                 title={this.descriptionTypes_languages(dscp)}

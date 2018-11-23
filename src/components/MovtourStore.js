@@ -3,8 +3,19 @@ import { action, computed, observable, autorun } from 'mobx';
 import I18n from './translate/i18n';
 
 class MovtourStore {
+  @observable data = [];
   @observable locale = '';
   @observable description_type_position = 1;
+
+  @action changeData(value){
+    this.data = value;
+    try {
+      AsyncStorage.setItem('@Data', JSON.stringify(value));
+      console.log("@Data saved");
+    } catch (error) {
+      console.log("Error saving data -> " + error);
+    }
+  }
 
   @action changeLocale(value){
     this.locale = value;
@@ -25,7 +36,6 @@ class MovtourStore {
       console.log("Error saving user profile -> " + error);
     }
   }
-
 
 }
 
