@@ -3,52 +3,15 @@ import {
   StyleSheet, View, Text, ScrollView, AsyncStorage, SafeAreaView, Image
 } from 'react-native';
 
+import { inject, observer } from 'mobx-react';
 import I18n from './translate/i18n';
 import { List, ListItem } from 'react-native-elements';
 import Flag from 'react-native-round-flags';
 import { NavigationEvents } from 'react-navigation';
 
+@inject('store')
+@observer
 export default class DrawerMenu extends React.Component {
-
-  state = {
-    data: [],
-    description_type_position: 1,
-  }
-
-  componentDidMount() {
-    AsyncStorage.getItem('@Data',(err, dados) => {
-      if(err) {
-        console.error('Error loading monuments', err)
-      } else {
-        if(!dados){
-          console.log('Os dados estão vazios');
-        } else {
-          console.log('Vai carregar os dados que estão na memória')
-          const monuments = JSON.parse(dados)
-          this.setState({
-            data: monuments,
-          })
-        }
-      }
-    })
-
-    AsyncStorage.getItem('@Profile', (err, value) => {
-			if (err) {
-				console.log("Error getting Profile: ", err);
-			} else if (!value) {
-					console.log("Key: @Profile não possui dados");
-			} else {
-				this.setState({description_type_position: JSON.parse(value)});
-			}
-		});
-
-
-    this.props.navigation.addListener(
-      'didFocus', payload => {
-        console.debug('didFocus', payload);
-      }
-    );
-  }
 
   descriptionTypes_languages(dscp){
     switch(I18n.locale){
@@ -63,30 +26,18 @@ export default class DrawerMenu extends React.Component {
 		}
   }
 
-  async saveLanguage(value){
+  saveLanguage(value){
+    this.props.store.changeLocale(value);
     I18n.locale = value;
-    this.setState({})
-    try {
-      await AsyncStorage.setItem('@Language', JSON.stringify(value));
-      console.log("@Language saved");
-    } catch (error) {
-      console.log("Error saving language -> " + error);
-    }
   }
 
-  async saveUserProfile(value){
-    this.setState({description_type_position: value})
-    try {
-      await AsyncStorage.setItem('@Profile', JSON.stringify(value));
-      console.log("@Profile salvo");
-    } catch (error) {
-      console.log("Error saving user profile -> " + error);
-    }
+  saveUserProfile(value){
+    this.props.store.descriptionType(value);
   }
 
   render() {
     const { navigate } = this.props.navigation;
-    this.props
+    const { data, description_type_position, locale } = this.props.store;
     return (
       <SafeAreaView style={styles.safeArea}>
         <View style={styles.container}>
@@ -137,13 +88,13 @@ export default class DrawerMenu extends React.Component {
                 containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center', textAlign: 'center'}}
                 titleStyle={{color: 'white'}}
               />
-            {this.state.data.categories == undefined ? console.log('') : this.state.data.categories.map(dscp => (
+            {data.categories == undefined ? console.log('') : data.categories.map(dscp => (
               <ListItem
                 key={dscp.id}
                 title={this.descriptionTypes_languages(dscp)}
                 hideChevron={true}
                 onPress={() => this.saveUserProfile(dscp.position)}
-                containerStyle={[this.state.description_type_position == dscp.position ? styles.listItemBG : '']}
+                containerStyle={[description_type_position == dscp.position ? styles.listItemBG : '']}
               />
             ))}
           </List>

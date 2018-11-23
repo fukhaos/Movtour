@@ -9,6 +9,8 @@ import{
 	StatusBar,
 	AsyncStorage
 } from 'react-native';
+
+import { observer, inject } from 'mobx-react';
 import {Tile, List, ListItem, Icon, Button} from 'react-native-elements';
 // import Swiper from 'react-native-swiper';
 import RNFS from 'react-native-fs';
@@ -17,11 +19,9 @@ import HTMLView from 'react-native-htmlview';
 import ActionButton from 'react-native-action-button';
 import I18n from './translate/i18n';
 
+@inject('store')
+@observer
 export default class MonumentDetails extends Component{
-
-	state = {
-		description_type_position: 1
-	}
 
 	static navigationOptions = ({ navigation }) => {
     const { monumento } = navigation.state.params;
@@ -31,79 +31,44 @@ export default class MonumentDetails extends Component{
     }
 	}
 
-	componentWillMount(){
-    AsyncStorage.getItem('@Profile', (err, value) => {
-			if (err) {
-				console.log("Error getting Profile: ", err);
-			} else if (!value) {
-					console.log("Key: @Profile não possui dados");
-			} else {
-				this.setState({description_type_position: JSON.parse(value)});
-				// console.log('Value: ', value);
-				// console.log('ValueParsed: ', JSON.parse(value));
-			}
-		});
-	}
-
-	async saveUserProfile(value){
-    try {
-      await AsyncStorage.setItem('@Profile', JSON.stringify(value));
-			this.setState({description_type_position: value});
-    } catch (error) {
-      console.log("Error saving user profile -> " + error);
-    }
-  }
-
 	descriptionByLocale(poi){
+		const {description_type_position} = this.props.store;
 		switch(I18n.locale){
 			case 'pt-PT':
 				return(
 					<HTMLView
-						value={poi.poi_descriptions[this.state.description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[this.state.description_type_position-1].description_pt}
+						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_pt}
 						stylesheet={styles}
 					/>
 				);
 			case 'en-GB':
 				return(
 					<HTMLView
-						value={poi.poi_descriptions[this.state.description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[this.state.description_type_position-1].description_en}
+						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_en}
 						stylesheet={styles}
 					/>
 				);
 			case 'fr-FR':
 				return(
 					<HTMLView
-						value={poi.poi_descriptions[this.state.description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[this.state.description_type_position-1].description_fr}
+						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_fr}
 						stylesheet={styles}
 					/>
 				);
 			case 'de-DE':
 				return(
 					<HTMLView
-						value={poi.poi_descriptions[this.state.description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[this.state.description_type_position-1].description_de}
+						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_de}
 						stylesheet={styles}
 					/>
 				);
 		}
 	}
 
-	descriptionTypes_languages(dscp){
-    switch(I18n.locale){
-			case 'pt-PT':
-				return dscp.name_pt
-			case 'en-GB':
-				return dscp.name_en
-			case 'fr-FR':
-				return dscp.name_fr
-			case 'de-DE':
-				return dscp.name_de
-		}
-  }
-
-
 	render(){
 		const {navigate} = this.props.navigation;
-		const {monumento, poi, swiperIndex, description_types}  = this.props.navigation.state.params;
+		const { locale } = this.props.store;
+		const {monumento, poi}  = this.props.navigation.state.params;
 		return (
 			<View style={styles.container}>
 				<ScrollView>
@@ -129,28 +94,6 @@ export default class MonumentDetails extends Component{
 						{this.descriptionByLocale(poi)}
 					</View>
 				</ScrollView>
-				<ActionButton
-					buttonColor="rgba(0,0,0,0.5)"
-					size={52}
-					offsetX={15}
-					offsetY={15}
-					bgColor="rgba(0,0,0,0.5)"
-					spacing={19}
-					verticalOrientation="up"
-					style={{position:'absolute', zIndex: 999}}
-					renderIcon={() => <Icon type="ionicon" color="white" size={36} name="md-settings" style={styles.actionButtonIcon} />}
-				>
-					{description_types.map(dscp => (
-						<ActionButton.Item
-							key={dscp.id}
-							buttonColor='rgb(7, 94, 84)'
-							title={this.descriptionTypes_languages(dscp)}
-							onPress={() => this.saveUserProfile(dscp.position)}
-						>
-							<Icon type="entypo" color="white" name="text-document" style={styles.actionButtonIcon} />
-						</ActionButton.Item>
-					))}
-				</ActionButton>
 			</View>
 		);
 	}

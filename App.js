@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Platform, YellowBox} from 'react-native';
 import { createStackNavigator, createDrawerNavigator } from 'react-navigation';
-
+import { Provider } from 'mobx-react';
 
 import Homepage from './src/components/Homepage';
 import Monument from './src/components/Monument';
@@ -11,6 +11,7 @@ import DrawerMenu from './src/components/DrawerMenu';
 import MultiPointMap from './src/components/MultiPointMap';
 // import Tabs from './src/components/Tabs';
 // import Teste from './src/components/Teste';
+import store from './src/components/MovtourStore';
 
 
 import { Icon } from 'react-native-elements';
@@ -25,9 +26,11 @@ const instructions = Platform.select({
 type Props = {};
 export default class App extends Component<Props> {
   render() {
-    YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle']);
+    YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle', 'Attempted to invoke']);
     return (
-      <Drawer />
+      <Provider store={store}>
+        <Drawer />
+      </Provider>
     );
   }
 }

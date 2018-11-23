@@ -136,9 +136,14 @@ android {
     }
 }
 
+configurations.all {
+    resolutionStrategy {
+      force 'org.webkit:android-jsc:r236355'
+    }
+}
+
 dependencies {
     compile project(':react-native-languages')
-    compile project(':react-native-i18n')
     compile project(':react-native-fs')
     compile project(':react-native-beacons-manager')
     compile project(':react-native-push-notification')
