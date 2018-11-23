@@ -49,6 +49,9 @@ export default class Homepage extends Component {
   @observable imagesDownloaded = 0;
   @observable detectedBeacons = [];
   @observable closerBeacon = null;
+  @observable beaconInUse = null;
+  @observable visitedPOIs = [];
+  @observable poisToDelete = [];
   @observable date_time = 0;
 
 
@@ -61,35 +64,35 @@ export default class Homepage extends Component {
     this.imagesDownloaded++;
   }
 
-  // @action pushBeacon(){
-  //
-  // }
-
-  state = {
-    showProgressBar: true,
-    totalOfImages:0,
-    imagesDownloaded:0,
-    progressBar:0,
-    showSpinner: true,
-    willDownload: false,
-    movtourBeacons: [],
-    detectedBeacons: [],
-    visitedBeacons: [],
-    beaconsToDelete: [],
-    visitedPOIs: [],
-    poisToDelete: [],
-    beaconInUse:null,
-    closerBeacon:null,
-    data: [],
-    homepageKey: '',
-    appState: AppState.currentState,
-    date_time: 0,
+  @action setBeaconInUse(value){
+    this.beaconInUse = value;
   }
+
+  // state = {
+  //   showProgressBar: true,
+  //   totalOfImages:0,
+  //   imagesDownloaded:0,
+  //   progressBar:0,
+  //   showSpinner: true,
+  //   willDownload: false,
+  //   movtourBeacons: [],
+  //   detectedBeacons: [],
+  //   visitedBeacons: [],
+  //   beaconsToDelete: [],
+  //   visitedPOIs: [],
+  //   poisToDelete: [],
+  //   beaconInUse:null,
+  //   closerBeacon:null,
+  //   data: [],
+  //   homepageKey: '',
+  //   appState: AppState.currentState,
+  //   date_time: 0,
+  // }
 
   componentWillMount() {
     RNFS.mkdir(RNFS.DocumentDirectoryPath+ '/images/');
 
-    // Para limpar os dados guardados no AsyncStorage descomentar a próxima linha
+    // Para limpar os dados guardados no AsyncStorage, descomentar a próxima linha.
     // AsyncStorage.clear();
 
 
@@ -128,10 +131,6 @@ export default class Homepage extends Component {
   componentDidMount(){
     const {navigate} = this.props.navigation;
     this.date_time = Date.now()%5000;
-    //Guardar chave da componente
-    // this.setState({
-    //   date_time: Date.now()%5000
-    // });
 
     // -- FETCHING DATA ---------------------------------------------- FETCHING DATA --
     fetch('http://movtour.ipt.pt/monuments.json', {timeout: 10 * 1000})
@@ -148,7 +147,7 @@ export default class Homepage extends Component {
           )
           this.getSavedData();
         } else {
-          this.props.store.changeData(res)
+          this.props.store.setData(res)
           this.deleteImages();
           this.saveImages();
         }
@@ -208,7 +207,7 @@ export default class Homepage extends Component {
           }
 
           if (this.appState.match(/inactive|background/)){
-            if (this.state.date_time > Date.now()%5000 - 500 && this.state.date_time < Date.now()%5000 + 500) {
+            if (this.date_time > Date.now()%5000 - 500 && this.date_time < Date.now()%5000 + 500) {
               this.sendNotification();
             }
           }
@@ -246,7 +245,7 @@ export default class Homepage extends Component {
                 if (notification.message == j.name){
                   navigate({
                     routeName: 'MonumentDetails',
-                    params: {monumento:i, poi:j, description_types:data.categories, data:data},
+                    params: {monumento:i, poi:j},
                     key:'detail'
                   });
                 }
@@ -462,72 +461,66 @@ export default class Homepage extends Component {
 
   openPOI(){
     const { navigate, replace } = this.props.navigation;
+    const { data } = this.props.store;
 
-    if (this.state.beaconInUse != null){
-      console.log("Beacon in Use:", this.state.beaconInUse);
+    if (this.beaconInUse != null){
+      console.log("Beacon in Use:", this.beaconInUse);
     }
-    if (this.state.closerBeacon != null){
-      console.log("Closer Beacon:", this.state.closerBeacon);
+    if (this.closerBeacon != null){
+      console.log("Closer Beacon:", this.closerBeacon);
     }
 
     // Abre o screen do beacon detectado.
     // Verifica se ja foi detectado algum beacon anteriormente (beaconInUse):
     // Se não foi, mostra o beacon mais perto (closerBeacon).
     // Se foi, verifica se o beacon mais perto é o beacon que está em uso. Se for o mesmo não faz nada, se não for mostra o screen desse beacon (POI).
-    if(this.state.data.monuments !== undefined && this.state.closerBeacon != null){
-        if (this.state.beaconInUse == null || this.state.beaconInUse.poi != this.state.closerBeacon.poi) {
-          this.state.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
-            if(b.uuid === this.state.closerBeacon.uuid){ // Identifica qual o POI associado a esse beacon.
-              this.setState({
-                beaconInUse:this.state.closerBeacon
-              });
+    if(data.monuments !== undefined && this.closerBeacon != null){
+        if (this.beaconInUse == null || this.beaconInUse.poi != this.closerBeacon.poi) {
+          data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
+            if(b.uuid === this.closerBeacon.uuid){ // Identifica qual o POI associado a esse beacon.
+              this.setBeaconInUse(this.closerBeacon);
 
               // Faz um post
               this.postFunction(j);
 
               navigate({
                 routeName: 'MonumentDetails',
-                params: {monumento:i, poi:j, description_types:this.state.data.categories, data:this.state.data},
+                params: {monumento:i, poi:j},
                 key:'detail'
               });
             }
           })))
         }
 
-        if (this.state.beaconInUse.poi == this.state.closerBeacon.poi){
-          this.setState({
-            beaconInUse:this.state.closerBeacon
-          });
+        if (this.beaconInUse.poi == this.closerBeacon.poi){
+          this.setBeaconInUse(this.closerBeacon);
         }
 
       // Faz reset à variavel
-      this.setState({closerBeacon:null});
+      this.closerBeacon = null;
     }
 
 
   }
 
   sendNotification(){
+    const { data } = this.props.store;
     console.log("sendNotification()");
-    if(this.state.data.monuments !== undefined){
-      if (this.state.closerBeacon != null) {
+    if(data.monuments !== undefined){
+      if (this.closerBeacon != null) {
         console.log("Entrou 0");
-        if (this.state.beaconInUse == null || (this.state.beaconInUse.uuid != this.state.closerBeacon.uuid && this.state.beaconInUse.poi != this.state.closerBeacon.poi)) {
+        if (this.beaconInUse == null || (this.beaconInUse.uuid != this.closerBeacon.uuid && this.beaconInUse.poi != this.closerBeacon.poi)) {
           console.log("Entrou 1");
           // Se o POI do closerBeacon não estiver nos visitados então entra aqui
-          if (this.state.visitedPOIs.some(vP => vP.poi === this.state.closerBeacon.poi) === false) {
+          if (this.visitedPOIs.some(vP => vP.poi === this.closerBeacon.poi) === false) {
 
-            this.state.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
-              if (b.uuid === this.state.closerBeacon.uuid){ // Identifica qual o POI associado a esse beacon.
+            data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
+              if (b.uuid === this.closerBeacon.uuid){ // Identifica qual o POI associado a esse beacon.
+                this.setBeaconInUse(this.closerBeacon);
+                this.visitedPOIs.push({poi: j.id})
 
-                this.setState({
-                  beaconInUse:this.state.closerBeacon,
-                  visitedPOIs: [...this.state.visitedPOIs, {poi: j.id}]
-                });
-
-                PushNotification.localNotificationSchedule({
-                  message: j.name, // (required)
-                  date: new Date(Date.now())
+                PushNotification.localNotification({
+                  message: j.name
                 });
 
                 // Faz um post
@@ -538,31 +531,23 @@ export default class Homepage extends Component {
 
           }
         } // fim do if (this.state.beaconInUse == null || (this.state.beac...
-        }
+      }
 
         // Os POIS visitados que não estão presentes
-        this.state.visitedPOIs.map((vP, vP_index) => {
+        this.visitedPOIs.map((vP, vP_index) => {
           // Se um POI visitado não for igual ao POI do closerBeacon
-          console.log("Entrou 2");
-          if (this.state.closerBeacon == null || this.state.closerBeacon.poi != vP.poi) {
-            console.log("#########");
+          if (this.closerBeacon == null || this.closerBeacon.poi != vP.poi) {
             // Se esse POI ainda não estiver nos poiToDelete, então é adicionado
-            if (this.state.poisToDelete.some(pDelete => pDelete.poi === vP.poi) === false) {
-              this.setState({
-                poisToDelete: [...this.state.poisToDelete, {poi: vP.poi, date: moment().add(30, 's')}]
-              })
+            if (this.poisToDelete.some(pDelete => pDelete.poi === vP.poi) === false) {
+              this.poisToDelete.push({poi: vP.poi, date: moment().add(30, 's')})
               console.log("Vai ser adicionado à lista dos POIs para eliminar: ", vP.poi);
             } else { // Se esse POI já estiver nos poiToDelete então verifica há quanto tempo lá está
-              this.state.poisToDelete.map((pDelete, pDelete_index) => {
+              this.poisToDelete.map((pDelete, pDelete_index) => {
                 // Encontra esse beacon no array para apagar e verifica se já passou 30 seg.
                 if (pDelete.poi === vP.poi && moment().isAfter(pDelete.date) ) {
                   console.log("Vai ser removido da lista dos POIs visitados: ", pDelete.poi);
-                  this.state.poisToDelete.splice(pDelete_index, 1);
-                  this.state.visitedPOIs.splice(vP_index, 1);
-                  this.setState({
-                    poisToDelete: this.state.poisToDelete,
-                    visitedPOIs: this.state.visitedPOIs
-                  })
+                  this.poisToDelete.splice(pDelete_index, 1);
+                  this.visitedPOIs.splice(vP_index, 1);
                   // Vai para a função que vai enviar um post a indicar que o utilizador saiu da zona do beacon 'X'
                   // this.postExitFromBeacon(pDelete.poi);
                 }
@@ -573,101 +558,95 @@ export default class Homepage extends Component {
 
         // Se algum beacon dos que está a ser detectado no momento estiver na lista dos beacons para apagar então
         // remove esse beacon da lista
-        if (this.state.closerBeacon != null){
-          this.state.poisToDelete.map((pDelete, pDelete_index) => {
-            console.log("Entrou 3");
-            if (this.state.closerBeacon.poi == pDelete.poi) {
+        if (this.closerBeacon != null){
+          this.poisToDelete.map((pDelete, pDelete_index) => {
+            if (this.closerBeacon.poi == pDelete.poi) {
               console.log("Vai ser removido da lista temporária: ", pDelete.poi);
-              this.state.poisToDelete.splice(pDelete_index, 1);
-              this.setState({
-                poisToDelete: this.state.poisToDelete
-              })
+              this.poisToDelete.splice(pDelete_index, 1);
             }
           })
         }
 
 
         // Faz reset à variavel
-        this.setState({closerBeacon:null});
-
-
+        this.closerBeacon = null;
 
       } // fim do if undefined
   }
 
-  newNotification(){
-
-    if(this.state.data.monuments !== undefined){
-
-      this.state.detectedBeacons.map(beacon => {
-          //O beacon ainda não tinha sido detectado?
-          if (this.state.visitedBeacons.some(vB => vB.uuid === beacon.uuid) === false) {
-
-            // Encontra o Poi que contém este beacon
-            this.state.data.monuments.map(i => i.pois.map((j, index) => {
-              if(j.beacon.uuid === beacon.uuid){
-
-                // Envia notificação
-                PushNotification.localNotification({
-                    message: j.name
-                });
-
-                // Faz um post
-                this.postFunction(j);
-              }
-            }))
-
-            // Adiciona este beacon aos beacons detectados
-            this.setState({
-              visitedBeacons: [...this.state.visitedBeacons, {uuid: beacon.uuid}]
-            })
-
-          }
-      })
-
-      this.state.visitedBeacons.map((vB, vB_index) => {
-        //Algum beacon já visitados não está a ser detectado?
-        if (this.state.detectedBeacons.some(beacon => beacon.uuid === vB.uuid) === false) {
-          // Se esse beacon não estiver na tabela beaconsToDelete então adiciona-o.
-          if (this.state.beaconsToDelete.some(bDelete => bDelete.uuid === vB.uuid) === false) {
-            // console.log("Vai adicionar à lista temporária: ", vB.uuid);
-            this.setState({
-              beaconsToDelete: [...this.state.beaconsToDelete, {uuid: vB.uuid, date: moment().add(30, 's')}]
-            })
-          } else { //Se já estiver vai ver à quanto tempo está lá
-            this.state.beaconsToDelete.map((bDelete, bDelete_index) => {
-              // Encontra esse beacon no array para apagar e verifica se já passou 30 seg.
-              if (bDelete.uuid === vB.uuid && moment().isAfter(bDelete.date) ) {
-                console.log("Vai ser removido da lista dos visitados: ", bDelete.uuid);
-                this.state.beaconsToDelete.splice(bDelete_index, 1);
-                this.state.visitedBeacons.splice(vB_index, 1);
-                this.setState({
-                  beaconsToDelete: this.state.beaconsToDelete,
-                  visitedBeacons: this.state.visitedBeacons
-                })
-                // Vai para a função que vai enviar um post a indicar que o utilizador saiu da zona do beacon 'X'
-                this.postExitFromBeacon(bDelete.uuid);
-              }
-            })
-          }
-
-        }
-      })
-
-      // Se algum beacon dos que está a ser detectado no momento estiver na lista dos beacons para apagar então
-      // remove esse beacon da lista
-      this.state.beaconsToDelete.map((bDelete, bDelete_index) => {
-        if (this.state.detectedBeacons.some(beacon => beacon.uuid === bDelete.uuid ) === true) {
-          console.log("Vai ser removido da lista temporária: ", bDelete.uuid);
-          this.state.beaconsToDelete.splice(bDelete_index, 1);
-          this.setState({
-            beaconsToDelete: this.state.beaconsToDelete
-          })
-        }
-      })
-    }
-
-  }
+  // newNotification(){
+  //
+  //   if(this.state.data.monuments !== undefined){
+  //
+  //     this.state.detectedBeacons.map(beacon => {
+  //         //O beacon ainda não tinha sido detectado?
+  //         if (this.state.visitedBeacons.some(vB => vB.uuid === beacon.uuid) === false) {
+  //
+  //           // Encontra o Poi que contém este beacon
+  //           this.state.data.monuments.map(i => i.pois.map((j, index) => {
+  //             if(j.beacon.uuid === beacon.uuid){
+  //
+  //               // Envia notificação
+  //               PushNotification.localNotification({
+  //                   message: j.name
+  //               });
+  //
+  //               // Faz um post
+  //               this.postFunction(j);
+  //             }
+  //           }))
+  //
+  //           // Adiciona este beacon aos beacons detectados
+  //           this.setState({
+  //             visitedBeacons: [...this.state.visitedBeacons, {uuid: beacon.uuid}]
+  //           })
+  //
+  //         }
+  //     })
+  //
+  //     this.state.visitedBeacons.map((vB, vB_index) => {
+  //       //Algum beacon já visitados não está a ser detectado?
+  //       if (this.state.detectedBeacons.some(beacon => beacon.uuid === vB.uuid) === false) {
+  //         // Se esse beacon não estiver na tabela beaconsToDelete então adiciona-o.
+  //         if (this.state.beaconsToDelete.some(bDelete => bDelete.uuid === vB.uuid) === false) {
+  //           // console.log("Vai adicionar à lista temporária: ", vB.uuid);
+  //           this.setState({
+  //             beaconsToDelete: [...this.state.beaconsToDelete, {uuid: vB.uuid, date: moment().add(30, 's')}]
+  //           })
+  //         } else { //Se já estiver vai ver à quanto tempo está lá
+  //           this.state.beaconsToDelete.map((bDelete, bDelete_index) => {
+  //             // Encontra esse beacon no array para apagar e verifica se já passou 30 seg.
+  //             if (bDelete.uuid === vB.uuid && moment().isAfter(bDelete.date) ) {
+  //               console.log("Vai ser removido da lista dos visitados: ", bDelete.uuid);
+  //               this.state.beaconsToDelete.splice(bDelete_index, 1);
+  //               this.state.visitedBeacons.splice(vB_index, 1);
+  //               this.setState({
+  //                 beaconsToDelete: this.state.beaconsToDelete,
+  //                 visitedBeacons: this.state.visitedBeacons
+  //               })
+  //               // Vai para a função que vai enviar um post a indicar que o utilizador saiu da zona do beacon 'X'
+  //               this.postExitFromBeacon(bDelete.uuid);
+  //             }
+  //           })
+  //         }
+  //
+  //       }
+  //     })
+  //
+  //     // Se algum beacon dos que está a ser detectado no momento estiver na lista dos beacons para apagar então
+  //     // remove esse beacon da lista
+  //     this.state.beaconsToDelete.map((bDelete, bDelete_index) => {
+  //       if (this.state.detectedBeacons.some(beacon => beacon.uuid === bDelete.uuid ) === true) {
+  //         console.log("Vai ser removido da lista temporária: ", bDelete.uuid);
+  //         this.state.beaconsToDelete.splice(bDelete_index, 1);
+  //         this.setState({
+  //           beaconsToDelete: this.state.beaconsToDelete
+  //         })
+  //       }
+  //     })
+  //   }
+  //
+  // }
 
   postFunction(k){
     fetch('http://movtour.ipt.pt/accesses', {
@@ -703,7 +682,7 @@ export default class Homepage extends Component {
     })
   }
 
-  async isBluetoothOn(){
+  isBluetoothOn(){
     BluetoothStatus.state()
       .then((result) => {
           if (result == false) {
@@ -741,10 +720,10 @@ export default class Homepage extends Component {
   }
 
   render(){
-    console.log("DADOS: ", this.state.data);
     const { navigate } = this.props.navigation;
-    const window = Dimensions.get('window');
     const { data, locale } = this.props.store;
+    const window = Dimensions.get('window');
+    console.log("DADOS: ", data);
     console.log('Images Downloaded: ', this.imagesDownloaded);
     console.log('Total of Images: ', this.totalImages);
     console.log('Progress: ', this.progressCircle);
@@ -780,7 +759,7 @@ export default class Homepage extends Component {
           <Display enable={this.showButtons()}>
             <View style={styles.buttonContent}>
               <TouchableHighlight
-                onPress={() => navigate('MultiPointMap', {data:this.state.data})}
+                onPress={() => navigate('MultiPointMap', {data:data})}
                 style={styles.button}
                 underlayColor='#075e54'
               >

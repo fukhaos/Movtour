@@ -7,7 +7,7 @@ class MovtourStore {
   @observable locale = '';
   @observable description_type_position = 1;
 
-  @action changeData(value){
+  @action setData(value){
     this.data = value;
     try {
       AsyncStorage.setItem('@Data', JSON.stringify(value));
