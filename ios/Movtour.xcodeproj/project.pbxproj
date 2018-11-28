@@ -57,7 +57,6 @@
 		BD6315FD216F9424006463FF /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD6315FA216F93A3006463FF /* libART.a */; };
 		BD73DF03819942A3959E8716 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B111AC5ED404CBE920E17B3 /* Ionicons.ttf */; };
 		BD9C7B3E216E55F3004BD78A /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9C7B1C216E5532004BD78A /* libRCTPushNotification.a */; };
-		C1192308B6174B638243BC3B /* libRNiBeacon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 847AD85AA3894CBAB641D25B /* libRNiBeacon.a */; };
 		CBA09483BC054A4584D85001 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FEAAB30927045D291A7B205 /* libRNDeviceInfo-tvOS.a */; };
 		D730E81355AD4D60ABD72328 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 0C3361490E8D4148A5321597 /* FontAwesome5_Regular.ttf */; };
 		E314F221F89D45FCB64B7AB4 /* MaterialCommunityIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D8A8153BDF4B48B8A4057E93 /* MaterialCommunityIcons.ttf */; };
@@ -341,13 +340,6 @@
 			remoteGlobalIDString = 358F4ED71D1E81A9004DF814;
 			remoteInfo = RCTBlob;
 		};
-		BD009ED2216F5D6D009AFFDA /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E6AEEA0EC91940ACA6FF5CD7 /* RNiBeacon.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 0D03EBDE1E56B1E700C55E6B;
-			remoteInfo = RNiBeacon;
-		};
 		BD61555121762283009EF645 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = DA00E2C9A59343778F563484 /* RNLanguages.xcodeproj */;
@@ -496,7 +488,6 @@
 		7CF6AA63DAD94167AEB73643 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		81CB0F7AD3874CFD9E871C52 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
-		847AD85AA3894CBAB641D25B /* libRNiBeacon.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNiBeacon.a; sourceTree = "<group>"; };
 		9F7B681A203F4F3FA96E8416 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
 		A86EC4E86A674CA0934021A9 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
@@ -507,7 +498,6 @@
 		D8A8153BDF4B48B8A4057E93 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		DA00E2C9A59343778F563484 /* RNLanguages.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNLanguages.xcodeproj; path = "../node_modules/react-native-languages/ios/RNLanguages.xcodeproj"; sourceTree = "<group>"; };
 		DD70DB0994334AAC904DA0F5 /* libRNBluetoothManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBluetoothManager.a; sourceTree = "<group>"; };
-		E6AEEA0EC91940ACA6FF5CD7 /* RNiBeacon.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNiBeacon.xcodeproj; path = "../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon.xcodeproj"; sourceTree = "<group>"; };
 		E7FC265E622148F19BCE4676 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		EF178B099F184FE8801ED0FE /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F31BD0FCDBE0437A9DC1DFB2 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -545,7 +535,6 @@
 				6FE51FFFFFD0456C9684F609 /* libRNDeviceInfo.a in Frameworks */,
 				E418D6D7CCBF40CB9CAEF3B6 /* libRNBluetoothManager.a in Frameworks */,
 				1C20CA53B1EF4499915567A4 /* libRNExitApp.a in Frameworks */,
-				C1192308B6174B638243BC3B /* libRNiBeacon.a in Frameworks */,
 				1DD43C13968B4FC1B834EBC4 /* libRNFS.a in Frameworks */,
 				927B08D9755445B1933F6635 /* libRNLanguages.a in Frameworks */,
 				F92A40F71C1B0DD8AD1145EF /* libPods-Movtour.a in Frameworks */,
@@ -746,7 +735,6 @@
 				60850736EF0A45DE93307339 /* RNDeviceInfo.xcodeproj */,
 				273B32384F264A658A2741D5 /* RNBluetoothManager.xcodeproj */,
 				4627888BD9C7429595BA3CE2 /* RNExitApp.xcodeproj */,
-				E6AEEA0EC91940ACA6FF5CD7 /* RNiBeacon.xcodeproj */,
 				38B3FC65195E424AB69E42E4 /* RNFS.xcodeproj */,
 				DA00E2C9A59343778F563484 /* RNLanguages.xcodeproj */,
 			);
@@ -795,14 +783,6 @@
 			children = (
 				ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */,
 				2D16E6721FA4F8DC00B85C8A /* libRCTBlob-tvOS.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		BD009ECF216F5D6D009AFFDA /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				BD009ED3216F5D6D009AFFDA /* libRNiBeacon.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1120,10 +1100,6 @@
 					ProjectRef = 38B3FC65195E424AB69E42E4 /* RNFS.xcodeproj */;
 				},
 				{
-					ProductGroup = BD009ECF216F5D6D009AFFDA /* Products */;
-					ProjectRef = E6AEEA0EC91940ACA6FF5CD7 /* RNiBeacon.xcodeproj */;
-				},
-				{
 					ProductGroup = BD61551B21762283009EF645 /* Products */;
 					ProjectRef = DA00E2C9A59343778F563484 /* RNLanguages.xcodeproj */;
 				},
@@ -1400,13 +1376,6 @@
 			fileType = archive.ar;
 			path = libRCTBlob.a;
 			remoteRef = ADBDB9261DFEBF0700ED6528 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		BD009ED3216F5D6D009AFFDA /* libRNiBeacon.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libRNiBeacon.a;
-			remoteRef = BD009ED2216F5D6D009AFFDA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		BD61555221762283009EF645 /* libRNLanguages.a */ = {
@@ -1716,7 +1685,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-status/ios",
-					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 				);
@@ -1746,7 +1714,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-status/ios",
-					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 				);
@@ -1778,7 +1745,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-status/ios",
-					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 				);
@@ -1806,7 +1772,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-status/ios",
-					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 				);
@@ -1840,7 +1805,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-status/ios",
-					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 				);
@@ -1878,7 +1842,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-status/ios",
-					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 				);
@@ -1915,7 +1878,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-status/ios",
-					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 				);
@@ -1952,7 +1914,6 @@
 					"$(SRCROOT)/../node_modules/react-native-vector-icons/RNVectorIconsManager",
 					"$(SRCROOT)/../node_modules/react-native-device-info/ios/RNDeviceInfo",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-status/ios",
-					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 				);

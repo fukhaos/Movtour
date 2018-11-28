@@ -21,20 +21,21 @@ import {
 
 import { inject, observer } from 'mobx-react';
 import { action, computed, observable } from 'mobx';
-import { Icon } from 'react-native-elements';                         //done
-import moment from 'moment';                                          //done
-import PushNotification from 'react-native-push-notification';        //done
-import Beacons  from 'react-native-beacons-manager';                  //done
-import DeviceInfo from 'react-native-device-info';                    //done
-import fetch from 'react-native-fetch-polyfill';                      //done
-import RNFS from 'react-native-fs';                                   //done but without testing
-import * as Progress from 'react-native-progress';                    //done
-import Display from 'react-native-display';                           //done
-import { BluetoothStatus } from 'react-native-bluetooth-status';      //done
+import { Icon } from 'react-native-elements';
+import moment from 'moment';
+import PushNotification from 'react-native-push-notification';
+// import Beacons from 'react-native-beacons-manager';
+import DeviceInfo from 'react-native-device-info';
+import fetch from 'react-native-fetch-polyfill';
+import RNFS from 'react-native-fs';
+import * as Progress from 'react-native-progress';
+import Display from 'react-native-display';
+import { BluetoothStatus } from 'react-native-bluetooth-status';
 import ActionButton from 'react-native-action-button';
 import I18n from './translate/i18n';
-import Flag from 'react-native-round-flags';                          //done
-import RNExitApp from 'react-native-exit-app';                        //done
+import Flag from 'react-native-round-flags';
+import RNExitApp from 'react-native-exit-app';
+// import requestFineLocationPermission from './requestFineLocationPermission';
 
 @inject('store')
 @observer
@@ -73,40 +74,10 @@ export default class Homepage extends Component {
     RNFS.mkdir(RNFS.DocumentDirectoryPath+ '/images/');
     // Para limpar os dados guardados no AsyncStorage, descomentar a próxima linha.
     // AsyncStorage.clear();
-
-
-    // Beacons.requestWhenInUseAuthorization();
-    // Beacons.requestAlwaysAuthorization();
-
-    if(Platform.OS === 'android'){
-      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION;
-      Beacons.detectIBeacons();
-      Beacons
-        .startRangingBeaconsInRegion({identifier: 'Tomar', uuid:null})
-        .then(() => console.log('Beacons ranging started succesfully'))
-        .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-
-      Beacons
-        .startMonitoringForRegion({identifier: 'Tomar', uuid:null})
-        .then(() => console.log('Beacons monitoring started succesfully'))
-        .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-    }
-
-    // Beacons.startUpdatingLocation();
-    // Beacons.setBackgroundScanPeriod(3´0000);
-
-    // Beacons
-    //   .startMonitoringForRegion({identifier: 'Tomar', uuid:null})
-    //   .then(() => console.log('Beacons monitoring started succesfully'))
-    //   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
-    //
-    // Beacons
-      // .startRangingBeaconsInRegion({identifier: 'Tomar', uuid:null})
-    //   .then(() => console.log('Beacons ranging started succesfully'))
-    //   .catch(error => console.log(`Beacons ranging not started, error: ${error}`));
+    console.log(Platform.Version);
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     const {navigate} = this.props.navigation;
     this.date_time = Date.now()%5000;
     // -- FETCHING DATA ---------------------------------------------- FETCHING DATA --
@@ -138,74 +109,70 @@ export default class Homepage extends Component {
       this.isBluetoothOn();
 
       // Beacons events
-      DeviceEventEmitter.addListener('beaconsDidRange',(data) => {
-          // let date = moment().add(1000, 's');
-          // Se for detectado algum beacon, verifica se é dos Movtour e encontra qual o mais próximo, adicionando-o à variável closerBeacon.
-          console.log("Beacons detetados: ", data.beacons);
-          if (data.beacons.length > 0){
-            let movtourBeacons = data.beacons.filter(beacon => this.movtourBeacons.includes(beacon.uuid));
-            this.detectedBeacons = movtourBeacons;
-
-            // Encontra o beacon que está mais perto
-            let tempBeacon = movtourBeacons.find(x=> x.distance == Math.min(...movtourBeacons.map( y => y.distance)));
-
-            if (tempBeacon != null){
-              console.log("Beacon mais perto:", tempBeacon.uuid, tempBeacon.distance);
-            }
-
-            // movtourBeacons.map(x => {
-            //   this.state.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
-            //     if (this.state.beaconInUse.poi == j && b.uuid == x.uuid){
-            //       if (x.distance < tempBeacon.distance + 1){
-            //         tempBeacon = x;
-            //
-            //     }
-            //   })))
-            // })
+      // if(Platform.OS === 'android'){
+      //   // Beacons.detectIBeacons();
+      //   Beacons.addIBeaconsDetection();
+      //
+      //   Beacons.BeaconsEventEmitter.addListener('beaconServiceConnected',() => {
+      //     console.log('service connected');
+      //     // this.startRanging();
+      //   });
+      // }
+      //
+      // Beacons.BeaconsEventEmitter.addListener('beaconsDidRange',(response: {
+      //     beacons: Array<{distance: number, proximity: string, rssi: string, uuid: string}>,
+      //     uuid: string,
+      //     indetifier: string,
+      //   }) => { console.log('BEACONS: ', response) }
+      // );
 
 
-            if(!this.closerBeacon || tempBeacon.distance < this.closerBeacon.distance){
-              if (this.props.store.data.monuments !== undefined){
-                this.props.store.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
-
-                  if (tempBeacon.uuid == b.uuid){
-                    let poi_id = j.id;
-                    this.closerBeacon = [{uuid: tempBeacon.uuid, poi: poi_id}];
-                    // this.setState({
-                    //   closerBeacon:{uuid: tempBeacon.uuid, poi: poi_id}
-                    // });
-                  }
-                })))
-
-              }
-            }
-          } else { //Se não for detectado nada atualiza a variavel detectedBeacons
-            this.detectedBeacons = null;
-            // this.setState({detectedBeacons: null});
-          }
-
-          if (this.appState.match(/inactive|background/)){
-            if (this.date_time > Date.now()%5000 - 500 && this.date_time < Date.now()%5000 + 500) {
-              this.sendNotification();
-            }
-          }
-
-      });
+      // DeviceEventEmitter.addListener('beaconsDidRange',(data) => {
+      //     // let date = moment().add(1000, 's');
+      //     // Se for detectado algum beacon, verifica se é dos Movtour e encontra qual o mais próximo, adicionando-o à variável closerBeacon.
+      //     console.log("Beacons detetados: ", data.beacons);
+      //     if (data.beacons.length > 0){
+      //       let movtourBeacons = data.beacons.filter(beacon => this.movtourBeacons.includes(beacon.uuid));
+      //       this.detectedBeacons = movtourBeacons;
+      //
+      //       // Encontra o beacon que está mais perto
+      //       let tempBeacon = movtourBeacons.find(x=> x.distance == Math.min(...movtourBeacons.map( y => y.distance)));
+      //
+      //       if (tempBeacon != null){
+      //         console.log("Beacon mais perto:", tempBeacon.uuid, tempBeacon.distance);
+      //       }
+      //
+      //       if(!this.closerBeacon || tempBeacon.distance < this.closerBeacon.distance){
+      //         if (this.props.store.data.monuments !== undefined){
+      //           this.props.store.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
+      //
+      //             if (tempBeacon.uuid == b.uuid){
+      //               let poi_id = j.id;
+      //               this.closerBeacon = {uuid: tempBeacon.uuid, poi: poi_id};
+      //             }
+      //           })))
+      //
+      //         }
+      //       }
+      //     } else { //Se não for detectado nada atualiza a variavel detectedBeacons
+      //       this.detectedBeacons = null;
+      //     }
+      //
+      //     if (this.appState.match(/inactive|background/)){
+      //       if (this.date_time > Date.now()%5000 - 500 && this.date_time < Date.now()%5000 + 500) {
+      //         this.sendNotification();
+      //       }
+      //     }
+      //
+      // });
 
       // X segundos em X segundos abre o openPOI
-      if (this.appState.match(/active/)){
-        setInterval(() => {
-          this.openPOI();
-        }, 5000);
-      }
-
-      // DeviceEventEmitter.addListener('regionDidEnter',(dataEnter) => {
-      //   console.log('monitoring - regionDidEnter data: ', dataEnter);
-      // });
-      //
-      // DeviceEventEmitter.addListener('regionDidExit',(dataExit) => {
-      //   console.log('monitoring - regionDidExit data: ', dataExit);
-      // });
+      // if (this.appState.match(/active/)){
+      //   setInterval(() => {
+      //     console.log(`Closer Beacon: ${this.closerBeacon}`);
+      //     this.openPOI();
+      //   }, 5000);
+      // }
 
       AppState.addEventListener('change', this._handleAppStateChange);
 
@@ -241,6 +208,15 @@ export default class Homepage extends Component {
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
   }
+
+  startRanging = async () => {
+    try {
+      await Beacons.startRangingBeaconsInRegion('Movtour', 'ed88a53a-1bc7-4ae4-8278-4ac82acd7722');
+      console.log('Beacons ranging started successfully');
+    } catch (error) {
+      throw error;
+    }
+  };
 
   //Se o estado da app (foreground/background/inactive) mudar, atualizar a variável 'appState'
   _handleAppStateChange = (nextAppState) => {
@@ -432,7 +408,7 @@ export default class Homepage extends Component {
   }
 
   openPOI(){
-    const { navigate, replace } = this.props.navigation;
+    const { navigate } = this.props.navigation;
     const { data } = this.props.store;
 
     if (this.beaconInUse != null){
@@ -695,8 +671,8 @@ export default class Homepage extends Component {
     const { navigate } = this.props.navigation;
     const { data, locale } = this.props.store;
     const window = Dimensions.get('window');
-    console.log("DADOS: ", data);
-    console.log("Movtour Beacons: ", this.movtourBeacons);
+    // console.log("DADOS: ", data);
+    // console.log("Movtour Beacons: ", this.movtourBeacons);
     // console.log('Images Downloaded: ', this.imagesDownloaded);
     // console.log('Total of Images: ', this.totalImages);
     // console.log('Progress: ', this.progressCircle);
