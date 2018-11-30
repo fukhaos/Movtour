@@ -219,7 +219,6 @@ const styles = StyleSheet.create({
 	},
 
 	p:{
-		// fontFamily: 'normal',
 		fontSize: 16,
 		color: 'black',
 		lineHeight: 25,
