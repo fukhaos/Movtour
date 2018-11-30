@@ -5,7 +5,7 @@ import {
 
 import { inject, observer } from 'mobx-react';
 import I18n from './translate/i18n';
-import { List, ListItem } from 'react-native-elements';
+import { ListItem } from 'react-native-elements';
 import Flag from 'react-native-round-flags';
 import { NavigationEvents } from 'react-navigation';
 import { SafeAreaView } from 'react-navigation';
@@ -49,44 +49,49 @@ export default class DrawerMenu extends React.Component {
           <Text>Movtour</Text>
         </View>
         <ScrollView>
-          <List>
             <ListItem
               title='Língua'
               leftIcon={{name: 'flag', color: 'white', type: 'FontAwesome'}}
               hideChevron={true}
-              containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center', textAlign: 'center'}}
+              containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center'}}
               titleStyle={{color: 'white'}}
+              bottomDivider={true}
             />
             <ListItem
               title={I18n.t('pt')}
               rightIcon={ <Flag code="PT" style={styles.flag} />}
               onPress={() => this.saveLanguage('pt-PT')}
               containerStyle={[I18n.locale == 'pt-PT' ? styles.listItemBG : '']}
+              bottomDivider={true}
             />
             <ListItem
               title={I18n.t('gb')}
               rightIcon={ <Flag code="GB" style={styles.flag} />}
               onPress={() => this.saveLanguage('en-GB')}
               containerStyle={[I18n.locale == 'en-GB' ? styles.listItemBG : '']}
+              bottomDivider={true}
             />
             <ListItem
               title={I18n.t('fr')}
               rightIcon={ <Flag code="FR" style={styles.flag} />}
               onPress={() => this.saveLanguage('fr-FR')}
               containerStyle={[I18n.locale == 'fr-FR' ? styles.listItemBG : '']}
+              bottomDivider={true}
             />
             <ListItem
               title={I18n.t('de')}
               rightIcon={ <Flag code="DE" style={styles.flag} />}
               onPress={() => this.saveLanguage('de-DE')}
               containerStyle={[I18n.locale == 'de-DE' ? styles.listItemBG : '']}
+              bottomDivider={true}
             />
             <ListItem
               title='Tipo de texto'
               leftIcon={{name: 'description', color: 'white'}}
               hideChevron={true}
-              containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center', textAlign: 'center'}}
+              containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center'}}
               titleStyle={{color: 'white'}}
+              bottomDivider={true}
             />
           {data.categories == undefined ? console.log('') : data.categories.map(dscp => (
             <ListItem
@@ -95,9 +100,9 @@ export default class DrawerMenu extends React.Component {
               hideChevron={true}
               onPress={() => this.saveUserProfile(dscp.position)}
               containerStyle={[description_type_position == dscp.position ? styles.listItemBG : '']}
+              bottomDivider={true}
             />
           ))}
-        </List>
         </ScrollView>
       </SafeAreaView>
     );
@@ -127,8 +132,5 @@ const styles = StyleSheet.create({
   flag:{
     width:20,
     height:20,
-  },
-  label:{
-
   },
 })

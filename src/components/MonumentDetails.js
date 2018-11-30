@@ -218,9 +218,10 @@ const styles = StyleSheet.create({
 		paddingTop:10,
 	},
 
-	bodyText:{
-		fontFamily: 'normal',
-		fontSize: 18,
-		color: 'black'
+	p:{
+		// fontFamily: 'normal',
+		fontSize: 16,
+		color: 'black',
+		lineHeight: 25,
 	}
 })
