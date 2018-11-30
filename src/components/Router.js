@@ -12,7 +12,7 @@ import Splashpage from './Splashpage';
 import Homepage from './Homepage';
 import MonumentDetails from './MonumentDetails';
 import DrawerMenu from './DrawerMenu';
-// import SinglePointMap from './SinglePointMap';
+import SinglePointMap from './SinglePointMap';
 import MultiPointMap from './MultiPointMap';
 // import Tabs from './Tabs';
 import store from './MovtourStore';
@@ -33,14 +33,13 @@ const Stack = createStackNavigator({
   Homepage: Homepage,
   MonumentDetails: MonumentDetails,
   MultiPointMap: MultiPointMap,
+  SinglePointMap: SinglePointMap,
 }, {
   initialRouteName: 'Homepage',
+  headerLayoutPreset: 'center',
   defaultNavigationOptions: ({ navigation }) => ({
     headerTitle:(
-      <View style={{alignItems: 'center'}}>
-        <Image style={{ width: 40, height: 40 }} source={require('../config/pictures/movtour_logo.png')}/>
-        {/* <Text style={{fontSize: 12, marginLeft: 2, color:PRIMARY_COLOR}}>Movtour</Text> */}
-      </View>
+        <Image style={{ width: 50, height: 50 }} source={require('../config/pictures/movtour_logo.png')}/>
     ),
     headerBackTitle: null,
     headerStyle:{
@@ -56,7 +55,8 @@ const Stack = createStackNavigator({
       fontSize: 14,
       fontWeight: 'normal',
       color:'white',
-      // alignSelf: 'center'
+      alignSelf: 'center',
+      textAlign: 'center'
     },
     headerRight: (
       <View style={{flexDirection:'row'}}>

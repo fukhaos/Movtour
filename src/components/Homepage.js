@@ -407,9 +407,9 @@ const styles = StyleSheet.create({
     padding: 10,
   },
 	monumentoContainer:{
-    // position: 'relative',
     margin: 5,
     width:(Dimensions.get('window').width / 2) - 20,
+    height:(Dimensions.get('window').width) - 120,
     shadowColor: "#000",
     shadowOffset: {width: 0,height: 2},
     shadowOpacity: 0.25,
@@ -417,23 +417,24 @@ const styles = StyleSheet.create({
     elevation: 5,
 	},
 	monumentoPic:{
-		justifyContent:'flex-end',
-    // height:((Dimensions.get('window').height - StatusBar.currentHeight - 40 - 66)/3),
-		height:((Dimensions.get('window').height-106)/3),
-		// width:Dimensions.get('window').width / 2,
+    flex: 1,
+    justifyContent: 'flex-end',
 	},
 	monumentoTitleContainer:{
-		backgroundColor:'rgba(7, 94, 84, 0.8)',
-		alignSelf:'flex-end',
-		height:30,
-		alignItems:'center',
-		paddingLeft:10,
+    flexDirection:'row',
+		height:60,
+		alignItems:'flex-end',
+    justifyContent:'center',
+		paddingLeft:5,
 		paddingRight:5,
-		borderTopLeftRadius:20,
-		borderBottomLeftRadius:20,
-		justifyContent:'center'
+    paddingBottom:5,
+    flexWrap:'wrap',
 	},
 	monumentoTitle:{
 		color:'white',
+    textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    textShadowOffset: {width: -1, height: 1},
+    textShadowRadius: 2,
+    textAlign: 'center',
 	}
 })

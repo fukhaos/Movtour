@@ -10,6 +10,8 @@ import{
 	AsyncStorage
 } from 'react-native';
 
+import { PRIMARY_COLOR } from './styles/common';
+
 import { observer, inject } from 'mobx-react';
 import {Tile, List, ListItem, Icon, Button} from 'react-native-elements';
 // import Swiper from 'react-native-swiper';
@@ -74,7 +76,9 @@ export default class MonumentDetails extends Component{
 			<SafeAreaView style={styles.container}>
 				<ScrollView>
 					{poi.cover_image_md5 != undefined ?
-						<Tile	imageSrc = {{uri:`file://${RNFS.DocumentDirectoryPath}/images/`+ poi.cover_image_md5 + `.jpg`}} />
+						<Tile
+							activeOpacity = {1}
+							imageSrc = {{uri:`file://${RNFS.DocumentDirectoryPath}/images/`+ poi.cover_image_md5 + `.jpg`}} />
 						:
 						<Tile imageSrc = {require('../config/pictures/missing.jpg')} />
 					}
@@ -84,7 +88,7 @@ export default class MonumentDetails extends Component{
 						  reverse
 						  name='location-on'
 							containerStyle={{margin:0, marginRight: 15}}
-						  color='#075e54'
+						  color={PRIMARY_COLOR}
 						  onPress={() => navigate('SinglePointMap', {monumento: monumento})}
 						/>
 					</View>
@@ -202,7 +206,7 @@ const styles = StyleSheet.create({
 	},
 
 	titleText: {
-		color: '#075e54',
+		color: PRIMARY_COLOR,
 		fontSize: 20,
 		textAlign: 'left',
 	},
@@ -216,7 +220,7 @@ const styles = StyleSheet.create({
 
 	bodyText:{
 		fontFamily: 'normal',
-		fontSize: 16,
+		fontSize: 18,
 		color: 'black'
 	}
 })
