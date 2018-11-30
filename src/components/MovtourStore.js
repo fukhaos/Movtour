@@ -3,6 +3,7 @@ import { action, computed, observable, autorun } from 'mobx';
 import I18n from './translate/i18n';
 
 class MovtourStore {
+  @observable bluetoothIcon = 'bluetooth';
   @observable data = [];
   @observable locale = '';
   @observable description_type_position = 1;

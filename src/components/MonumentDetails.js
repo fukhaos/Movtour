@@ -18,6 +18,7 @@ import HTMLView from 'react-native-htmlview';
 // import Modal from 'react-native-modalbox';
 import ActionButton from 'react-native-action-button';
 import I18n from './translate/i18n';
+import { SafeAreaView } from 'react-navigation';
 
 @inject('store')
 @observer
@@ -70,7 +71,7 @@ export default class MonumentDetails extends Component{
 		const { locale } = this.props.store;
 		const {monumento, poi}  = this.props.navigation.state.params;
 		return (
-			<View style={styles.container}>
+			<SafeAreaView style={styles.container}>
 				<ScrollView>
 					{poi.cover_image_md5 != undefined ?
 						<Tile	imageSrc = {{uri:`file://${RNFS.DocumentDirectoryPath}/images/`+ poi.cover_image_md5 + `.jpg`}} />
@@ -94,7 +95,7 @@ export default class MonumentDetails extends Component{
 						{this.descriptionByLocale(poi)}
 					</View>
 				</ScrollView>
-			</View>
+			</SafeAreaView>
 		);
 	}
 }
