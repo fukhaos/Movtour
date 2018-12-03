@@ -14,6 +14,7 @@ import MonumentDetails from './MonumentDetails';
 import DrawerMenu from './DrawerMenu';
 import SinglePointMap from './SinglePointMap';
 import MultiPointMap from './MultiPointMap';
+import AboutUs from './AboutUs';
 // import Tabs from './Tabs';
 import store from './MovtourStore';
 
@@ -34,6 +35,7 @@ const Stack = createStackNavigator({
   MonumentDetails: MonumentDetails,
   MultiPointMap: MultiPointMap,
   SinglePointMap: SinglePointMap,
+  AboutUs: AboutUs,
 }, {
   initialRouteName: 'Homepage',
   headerLayoutPreset: 'center',

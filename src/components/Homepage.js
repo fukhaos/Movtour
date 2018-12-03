@@ -44,7 +44,7 @@ export default class Homepage extends Component{
 
   componentDidMount(){
     this.date_time = Date.now()%5000;
-    this.bluetoothCheck();
+    // this.bluetoothCheck();
 
     // Beacons events
     // if(Platform.OS === 'android'){
