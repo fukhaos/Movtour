@@ -9,22 +9,29 @@ import{
   Dimensions
 } from 'react-native';
 
+import { observable, action } from 'mobx';
+import { inject, observer } from 'mobx-react';
 import { Divider } from 'react-native-elements';
+import I18n from './translate/i18n';
 
+
+@inject('store')
+@observer
 export default class AboutUs extends Component{
   render(){
+		const { locale } = this.props.store;
     return(
       <SafeAreaView>
         <ScrollView>
           <View style={styles.container}>
-            <Text style={styles.title}>Sobre nós</Text>
+            <Text style={styles.title}>{I18n.t('aboutUs')}</Text>
             <View style={styles.aboutUsContainer}>
               <Text style={styles.text}>
-                Sistema desenvolvido no âmbito do Projeto "MovTour - Turismo e Cultura com e para a Sociedade".
+                {I18n.t('aboutUsText1')}
               </Text>
 
               <Text style={[styles.text, {marginTop: 10}]}>
-                Desenvolvido em parceria entre o Instituto Politécnico de Tomar, o Instituito Politécnico de Santarém e o Centro de Estudos Sociais da Universidade de Coimbra e cofinanciado pelo Programa Operacional Competitividade e Internacionalização, Portugal 2020 e União Europeia através do Fundo Europeu de Desenvolvimento Regional.
+                {I18n.t('aboutUsText2')}
               </Text>
           </View>
 

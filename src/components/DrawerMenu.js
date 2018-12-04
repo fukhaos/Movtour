@@ -64,8 +64,8 @@ export default class DrawerMenu extends React.Component {
         <ScrollView>
             {/* Definir a língua da aplicação */}
             <ListItem
-              title='Língua'
-              leftIcon={{name: 'language', color: 'white', type: 'entypo'}}
+              title={I18n.t('language')}
+              leftIcon={{name: 'language', color: 'white', type: 'font-awesome'}}
               rightIcon={{name: this.collapseLanguage ? 'chevron-small-down' : 'chevron-small-up', color: 'white', type: 'entypo'}}
               hideChevron={true}
               containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center'}}
@@ -106,7 +106,7 @@ export default class DrawerMenu extends React.Component {
 
             {/* Definir o nível do contéudo do texto */}
             <ListItem
-              title='Tipo de texto'
+              title={I18n.t('contentType')}
               leftIcon={{name: 'description', color: 'white'}}
               rightIcon={{name: this.collapseLanguage ? 'chevron-small-down' : 'chevron-small-up', color: 'white', type: 'entypo'}}
               hideChevron={true}
@@ -133,7 +133,7 @@ export default class DrawerMenu extends React.Component {
             {/* Projecto financiado pelo programa Movtour...etc...etc..  */}
             {/* Parcerias */}
             <ListItem
-              title='Sobre nós'
+              title={I18n.t('aboutUs')}
               leftIcon={{name: 'info', color: 'white', type: 'entypo'}}
               hideChevron={true}
               containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center'}}
