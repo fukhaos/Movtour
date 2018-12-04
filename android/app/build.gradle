@@ -151,6 +151,7 @@ dependencies {
     compile project(':react-native-bluetooth-status')
     compile project(':react-native-device-info')
     compile project(':react-native-vector-icons')
+    compile project(':react-native-linear-gradient')
     compile (project(':react-native-maps')){
       exclude group: 'com.google.android.gms', module: 'play-services-base'
       exclude group: 'com.google.android.gms', module: 'play-services-maps'
