@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import com.reactcommunity.rnlanguages.RNLanguagesPackage;
 import com.rnfs.RNFSPackage;
@@ -34,7 +33,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new RNGestureHandlerPackage(),
-            new BeaconsAndroidPackage(),
             new MapsPackage(),
             new RNLanguagesPackage(),
             new RNFSPackage(),

@@ -5,7 +5,6 @@ import{
 	View,
 	ScrollView,
 	Image,
-  SafeAreaView,
   Dimensions
 } from 'react-native';
 
@@ -13,6 +12,7 @@ import { observable, action } from 'mobx';
 import { inject, observer } from 'mobx-react';
 import { Divider } from 'react-native-elements';
 import I18n from './translate/i18n';
+import { SafeAreaView } from 'react-navigation';
 
 
 @inject('store')

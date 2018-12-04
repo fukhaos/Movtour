@@ -22,6 +22,7 @@ import fetch from 'react-native-fetch-polyfill';
 import DeviceInfo from 'react-native-device-info';
 import PushNotification from 'react-native-push-notification';
 import { SafeAreaView } from 'react-navigation';
+import LinearGradient from 'react-native-linear-gradient';
 
 @inject('store')
 @observer
@@ -43,6 +44,7 @@ export default class Homepage extends Component{
   }
 
   componentDidMount(){
+    // Beacons.requestWhenInUseAuthorization();
     this.date_time = Date.now()%5000;
     // this.bluetoothCheck();
 
@@ -155,14 +157,14 @@ export default class Homepage extends Component{
     // this.setState({appState: nextAppState});
   }
 
-  startRanging = async () => {
-    try {
-      await Beacons.startRangingBeaconsInRegion('Movtour', 'ed88a53a-1bc7-4ae4-8278-4ac82acd7722');
-      console.log('Beacons ranging started successfully');
-    } catch (error) {
-      throw error;
-    }
-  };
+  // startRanging = async () => {
+  //   try {
+  //     await Beacons.startRangingBeaconsInRegion('Movtour', 'ed88a53a-1bc7-4ae4-8278-4ac82acd7722');
+  //     console.log('Beacons ranging started successfully');
+  //   } catch (error) {
+  //     throw error;
+  //   }
+  // };
 
   bluetoothCheck(){
     BluetoothStatus.state()
@@ -373,9 +375,13 @@ export default class Homepage extends Component{
                 >
                 {j.cover_image_md5 != undefined ?
                   <ImageBackground style={styles.monumentoPic} source={{uri:`file://${RNFS.DocumentDirectoryPath}/images/${j.cover_image_md5}.jpg`}}>
-                    <View style={styles.monumentoTitleContainer}>
-                      <Text style={styles.monumentoTitle}>{j.name}</Text>
-                    </View>
+
+                    {/* <LinearGradient colors={['rgba(0,0,0,0.5)', 'rgba(40, 138, 189, 0.1)']} style={styles.monumentGradient}> */}
+
+                      <LinearGradient colors={['rgba(0,0,0,0)', 'rgba(0,0,0,0.8)']} style={styles.monumentoTitleContainer}>
+                        <Text style={styles.monumentoTitle}>{j.name}</Text>
+                      </LinearGradient>
+                    {/* </LinearGradient> */}
                   </ImageBackground>
                   :
                   <ImageBackground style={styles.monumentoPic} source={require('../config/pictures/missing.jpg')}>
@@ -414,7 +420,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0,height: 2},
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 4,
 	},
 	monumentoPic:{
     flex: 1,
@@ -422,7 +428,7 @@ const styles = StyleSheet.create({
 	},
 	monumentoTitleContainer:{
     flexDirection:'row',
-		height:60,
+		height:100,
 		alignItems:'flex-end',
     justifyContent:'center',
 		paddingLeft:5,
@@ -432,9 +438,9 @@ const styles = StyleSheet.create({
 	},
 	monumentoTitle:{
 		color:'white',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: {width: -1, height: 1},
-    textShadowRadius: 2,
+    // textShadowColor: 'rgba(0, 0, 0, 0.75)',
+    // textShadowOffset: {width: -1, height: 1},
+    // textShadowRadius: 2,
     textAlign: 'center',
 	}
 })
