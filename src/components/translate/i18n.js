@@ -37,6 +37,10 @@ I18n.translations = {
     aboutUs:'Sobre nós',
     aboutUsText1:'Sistema desenvolvido no âmbito do Projeto "MovTour - Turismo e Cultura com e para a Sociedade".',
     aboutUsText2:'Desenvolvido em parceria entre o Instituto Politécnico de Tomar, o Instituito Politécnico de Santarém e o Centro de Estudos Sociais da Universidade de Coimbra e cofinanciado pelo Programa Operacional Competitividade e Internacionalização, Portugal 2020 e União Europeia através do Fundo Europeu de Desenvolvimento Regional.',
+    alertBluetoothOffTitle:'Bluetooth desligado',
+    alertBluetoothOffMsg:'Se deseja que a aplicação o avise quando estiver perto de um Ponto de Interesse, ligue o Bluetooth. Obrigado.',
+    alertBluetoothButtonTurnOn:'Ligar Bluetooth',
+    alertBluetoothButtonUnderstand:'Compreendi',
   },
   en: {
     map: 'Map',
@@ -53,7 +57,11 @@ I18n.translations = {
     contentType: 'Content Type',
     aboutUs:'About us',
     aboutUsText1:'System developed under the project "MovTour - Tourism and Culture and for Society".',
-    aboutUsText2:'Developed in partnership between the Polytechnic Institute of Tomar, the Polytechnic Institute of Santarém and the Center for Social Studies of the University of Coimbra and co-financed by the Operational Program for Competitiveness and Internationalization, Portugal 2020 and the European Union through the European Regional Development Fund.'
+    aboutUsText2:'Developed in partnership between the Polytechnic Institute of Tomar, the Polytechnic Institute of Santarém and the Center for Social Studies of the University of Coimbra and co-financed by the Operational Program for Competitiveness and Internationalization, Portugal 2020 and the European Union through the European Regional Development Fund.',
+    alertBluetoothOffTitle:'Bluetooth off',
+    alertBluetoothOffMsg:'If you want to receive notifications when you are near a Point of Interest, turn the Bluetooth on. Thank you.',
+    alertBluetoothButtonTurnOn:'Turn on Bluetooth',
+    alertBluetoothButtonUnderstand:'Understood',
   },
   fr: {
     map: 'Carte',
@@ -71,6 +79,10 @@ I18n.translations = {
     aboutUs:'À propos de nous',
     aboutUsText1:'Système développé dans le cadre du projet "MovTour - Tourisme et Culture et pour la société".',
     aboutUsText2:'Développé en partenariat entre l’Institut polytechnique de Tomar, l’Institut polytechnique de Santarém et le Centre d’études sociales de l’Université de Coimbra et cofinancé par le Programme opérationnel pour la compétitivité et l’internationalisation, Portugal 2020 et l’Union européenne, par le biais du Fonds européen de développement régional.',
+    alertBluetoothOffTitle:'Bluetooth désactivé',
+    alertBluetoothOffMsg:"Si vous souhaitez recevoir des notifications lorsque vous vous trouvez à proximité d'un point d'intérêt, activez Bluetooth. Je vous remercie.",
+    alertBluetoothButtonTurnOn:'Activer le bluetooth',
+    alertBluetoothButtonUnderstand:'Compris',
   },
   de: {
     map: 'Karte',
@@ -88,6 +100,10 @@ I18n.translations = {
     aboutUs:'Über uns',
     aboutUsText1:'System entwickelt unter dem Projekt "MovTour - Tourismus und Kultur und für die Gesellschaft".',
     aboutUsText2:'Entwickelt in Partnerschaft zwischen dem Polytechnischen Institut von Tomar, dem Polytechnischen Institut von Santarém und dem Zentrum für Sozialstudien der Universität Coimbra und mitfinanziert vom Operationellen Programm für Wettbewerbsfähigkeit und Internationalisierung, Portugal 2020 und der Europäischen Union über den Europäischen Fonds für regionale Entwicklung.',
+    alertBluetoothOffTitle:'Bluetooth aus',
+    alertBluetoothOffMsg:'Wenn Sie Benachrichtigungen erhalten möchten, wenn Sie sich in der Nähe eines Sonderziels befinden, aktivieren Sie Bluetooth. Vielen Dank.',
+    alertBluetoothButtonTurnOn:'Schalten Sie das Bluetooth ein',
+    alertBluetoothButtonUnderstand:'Verstanden',
   }
 };
 

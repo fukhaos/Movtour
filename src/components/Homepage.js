@@ -11,22 +11,30 @@ import {
   AppState,
   AsyncStorage,
   Alert,
+  DeviceEventEmitter,
+  PermissionsAndroid,
+  Platform,
 } from 'react-native';
 
 import { inject, observer } from 'mobx-react';
 import { action, computed, observable } from 'mobx';
 import RNFS from 'react-native-fs';
 import { BluetoothStatus } from 'react-native-bluetooth-status';
-// import Beacons from 'react-native-beacons-manager';
+import moment from 'moment';
+import Beacons from 'react-native-beacons-manager';
 import fetch from 'react-native-fetch-polyfill';
 import DeviceInfo from 'react-native-device-info';
 import PushNotification from 'react-native-push-notification';
 import { SafeAreaView } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
+import I18n from './translate/i18n';
 
 @inject('store')
 @observer
 export default class Homepage extends Component{
+
+  // will be set as a reference to "beaconsDidRange" event:
+  beaconsDidRangeEvent = null;
 
   // VARIAVEIS
   @observable date_time = 0;
@@ -44,76 +52,67 @@ export default class Homepage extends Component{
   }
 
   componentDidMount(){
-    // Beacons.requestWhenInUseAuthorization();
-    this.date_time = Date.now()%5000;
-    // this.bluetoothCheck();
+    const { navigate } = this.props.navigation;
 
-    // Beacons events
-    // if(Platform.OS === 'android'){
-    //   // Beacons.detectIBeacons();
-    //   Beacons.addIBeaconsDetection();
-    //
-    //   Beacons.BeaconsEventEmitter.addListener('beaconServiceConnected',() => {
-    //     console.log('service connected');
-    //     // this.startRanging();
-    //   });
-    // }
-    //
-    // Beacons.BeaconsEventEmitter.addListener('beaconsDidRange',(response: {
-    //     beacons: Array<{distance: number, proximity: string, rssi: string, uuid: string}>,
-    //     uuid: string,
-    //     indetifier: string,
-    //   }) => { console.log('BEACONS: ', response) }
-    // );
+    this.getMovtourBeacons(); // Recolhe a lista de beacons do Movtour;
+    this.bluetoothCheck(); // Verifica o estado do bluetooth
 
-    // DeviceEventEmitter.addListener('beaconsDidRange',(data) => {
-    //     // let date = moment().add(1000, 's');
-    //     // Se for detectado algum beacon, verifica se é dos Movtour e encontra qual o mais próximo, adicionando-o à variável closerBeacon.
-    //     console.log("Beacons detetados: ", data.beacons);
-    //     if (data.beacons.length > 0){
-    //       let movtourBeacons = data.beacons.filter(beacon => this.movtourBeacons.includes(beacon.uuid));
-    //       this.detectedBeacons = movtourBeacons;
-    //
-    //       // Encontra o beacon que está mais perto
-    //       let tempBeacon = movtourBeacons.find(x=> x.distance == Math.min(...movtourBeacons.map( y => y.distance)));
-    //
-    //       if (tempBeacon != null){
-    //         console.log("Beacon mais perto:", tempBeacon.uuid, tempBeacon.distance);
-    //       }
-    //
-    //       if(!this.closerBeacon || tempBeacon.distance < this.closerBeacon.distance){
-    //         if (this.props.store.data.monuments !== undefined){
-    //           this.props.store.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
-    //
-    //             if (tempBeacon.uuid == b.uuid){
-    //               let poi_id = j.id;
-    //               this.closerBeacon = {uuid: tempBeacon.uuid, poi: poi_id};
-    //             }
-    //           })))
-    //
-    //         }
-    //       }
-    //     } else { //Se não for detectado nada atualiza a variavel detectedBeacons
-    //       this.detectedBeacons = null;
-    //     }
-    //
-    //     if (this.appState.match(/inactive|background/)){
-    //       if (this.date_time > Date.now()%5000 - 500 && this.date_time < Date.now()%5000 + 500) {
-    //         this.sendNotification();
-    //       }
-    //     }
-    //
-    // });
-
-    // X segundos em X segundos abre o openPOI
-    // if (this.appState.match(/active/)){
-    //   setInterval(() => {
-    //     console.log(`Closer Beacon: ${this.closerBeacon}`);
-    //     this.openPOI();
-    //   }, 5000);
-    // }
+    if(Platform.OS === 'android'){
+      this.AndroidPermission(); // Lança um popup para o utilizador escolher se aceita ou não que a app utilize a localização do dispositivo.
+    }
+    this.startBeaconDetection(); // Inicia a deteção de beacons;
+    this.startRanging(); // Inicia a procura de beacons
 
     AppState.addEventListener('change', this._handleAppStateChange);
+
+    this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange',(data: {
+        beacons: Array<{distance: number, proximity: string, rssi: string, uuid: string}>,
+        uuid: string,
+        indetifier: string,
+      }) => {
+        // Se for detectado algum beacon, verifica se é dos Movtour e encontra qual o mais próximo, adicionando-o à variável closerBeacon.
+        console.log("Beacons detetados: ", data.beacons);
+        if (data.beacons.length > 0){
+          let movtourBeacons = data.beacons.filter(beacon => this.movtourBeacons.includes(beacon.uuid));
+          this.detectedBeacons = movtourBeacons;
+
+          // Encontra o beacon que está mais perto
+          let tempBeacon = movtourBeacons.find(x=> x.distance == Math.min(...movtourBeacons.map( y => y.distance)));
+
+          if (tempBeacon != null){
+            console.log("Beacon mais perto:", tempBeacon.uuid, tempBeacon.distance);
+          }
+
+          if(!this.closerBeacon || tempBeacon.distance < this.closerBeacon.distance){
+            if (this.props.store.data.monuments !== undefined){
+              this.props.store.data.monuments.map(i => i.pois.map(j => j.beacons.map(b => {
+
+                if (tempBeacon.uuid == b.uuid){
+                  let poi_id = j.id;
+                  this.closerBeacon = {uuid: tempBeacon.uuid, poi: poi_id};
+                }
+              })))
+
+            }
+          }
+        } else { //Se não for detectado nada atualiza a variavel detectedBeacons
+          this.detectedBeacons = null;
+        }
+
+        if (this.appState.match(/inactive|background/)){
+          if (this.date_time > Date.now()%5000 - 500 && this.date_time < Date.now()%5000 + 500) {
+            this.sendNotification();
+          }
+        }
+    });
+
+    // X segundos em X segundos abre o openPOI
+    if (this.appState.match(/active/)){
+      setInterval(() => {
+        console.log(`Closer Beacon: ${this.closerBeacon}`);
+        this.openPOI();
+      }, 5000);
+    }
 
     // Push Notifications settings
     PushNotification.configure({
@@ -141,10 +140,14 @@ export default class Homepage extends Component{
       popInitialNotification: true,
       requestPermissions: true,
     });
+    
+    this.date_time = Date.now()%5000;
   } //fim do componentDidMount
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this._handleAppStateChange);
+    this.stopRanging();
+    this.beaconsDidRangeEvent.remove();
   }
 
   //Se o estado da app (foreground/background/inactive) mudar, atualizar a variável 'appState'
@@ -152,32 +155,75 @@ export default class Homepage extends Component{
     if (this.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
     }
-
     this.appState = nextAppState;
-    // this.setState({appState: nextAppState});
   }
 
-  // startRanging = async () => {
-  //   try {
-  //     await Beacons.startRangingBeaconsInRegion('Movtour', 'ed88a53a-1bc7-4ae4-8278-4ac82acd7722');
-  //     console.log('Beacons ranging started successfully');
-  //   } catch (error) {
-  //     throw error;
-  //   }
-  // };
+  async startRanging(){
+    try {
+      await Beacons.startRangingBeaconsInRegion('Movtour');
+      console.log('Beacons ranging started successfully');
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  async stopRanging(){
+    try {
+      await Beacons.stopRangingBeaconsInRegion('Movtour');
+      console.log('Beacons stopped ranging successfully');
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async startBeaconDetection(){
+    try {
+      await Beacons.addIBeaconsDetection();
+    } catch (error) {
+      console.log(`something went wrong during beacon detection initialization: ${error}`);
+    }
+  }
+
+  async AndroidPermission(){
+    try {
+        const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+            {
+                'title': 'Location Permission',
+                'message': 'We need access to your location so we can get beacon signals.'
+            }
+        )
+        if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+            console.log("Location Permitted")
+        } else {
+            console.log("Location permission denied")
+        }
+    } catch (err) {
+        console.warn(err)
+    }
+  }
 
   bluetoothCheck(){
     BluetoothStatus.state()
       .then((result) => {
           if (result == false) {
-            Alert.alert(
-              'Bluetooth desligado',
-              'Se deseja que a aplicação o avise quando estiver perto de um Ponto de Interesse, ligue o Bluetooth. Obrigado.',
-              [
-                {text: 'Ligar Bluetooth', onPress: () => this.turnBluetoothOn()},
-                {text: 'Compreendi'}
-              ],
-            )
+            if(Platform.OS === 'android'){
+              Alert.alert(
+                I18n.t('alertBluetoothOffTitle'),
+                I18n.t('alertBluetoothOffMsg'),
+                [
+                  {text: I18n.t('alertBluetoothButtonTurnOn'), onPress: () => this.turnBluetoothOn()},
+                  {text: I18n.t('alertBluetoothButtonUnderstand')}
+                ],
+              )
+            } else {
+              Alert.alert(
+                I18n.t('alertBluetoothOffTitle'),
+                I18n.t('alertBluetoothOffMsg'),
+                [{text: I18n.t('alertBluetoothButtonUnderstand')}],
+              )
+            }
+
           }
       })
   }

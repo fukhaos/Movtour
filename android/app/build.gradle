@@ -97,6 +97,10 @@ android {
     compileSdkVersion rootProject.ext.compileSdkVersion
     buildToolsVersion rootProject.ext.buildToolsVersion
 
+    packagingOptions {
+		    exclude 'main/AndroidManifest.xml'
+    }
+
     defaultConfig {
         applicationId "com.movtour"
         minSdkVersion rootProject.ext.minSdkVersion
@@ -143,6 +147,7 @@ configurations.all {
 }
 
 dependencies {
+    compile project(':react-native-beacons-manager')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-languages')
     compile project(':react-native-fs')

@@ -45,6 +45,9 @@ target 'Movtour' do
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
 
 
+
+  pod 'ReactNativeBeaconsManager', :path => '../node_modules/react-native-beacons-manager'
+
 end
 
 post_install do |installer|
