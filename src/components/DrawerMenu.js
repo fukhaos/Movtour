@@ -108,7 +108,7 @@ export default class DrawerMenu extends React.Component {
             <ListItem
               title={I18n.t('contentType')}
               leftIcon={{name: 'description', color: 'white'}}
-              rightIcon={{name: this.collapseLanguage ? 'chevron-small-down' : 'chevron-small-up', color: 'white', type: 'entypo'}}
+              rightIcon={{name: this.collapseText ? 'chevron-small-down' : 'chevron-small-up', color: 'white', type: 'entypo'}}
               hideChevron={true}
               containerStyle={{backgroundColor: '#E5530F', alignItems:'center', justifyContent: 'center'}}
               titleStyle={{color: 'white'}}
