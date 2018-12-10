@@ -3,6 +3,7 @@ package com.movtour;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.reactlibrary.RNBluetoothInfoPackage;
 import com.mackentoch.beaconsandroid.BeaconsAndroidPackage;
 import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
 import com.airbnb.android.react.maps.MapsPackage;
@@ -34,6 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+            new RNBluetoothInfoPackage(),
             new BeaconsAndroidPackage(),
             new RNGestureHandlerPackage(),
             new MapsPackage(),

@@ -20,6 +20,7 @@ import { inject, observer } from 'mobx-react';
 import { action, computed, observable } from 'mobx';
 import RNFS from 'react-native-fs';
 import { BluetoothStatus } from 'react-native-bluetooth-status';
+import RNBluetoothInfo from 'react-native-bluetooth-info';
 import moment from 'moment';
 import Beacons from 'react-native-beacons-manager';
 import fetch from 'react-native-fetch-polyfill';
@@ -35,6 +36,8 @@ export default class Homepage extends Component{
 
   // will be set as a reference to "beaconsDidRange" event:
   beaconsDidRangeEvent = null;
+
+  beaconsServiceDidConnect: any = null;
 
   // VARIAVEIS
   @observable date_time = 0;
@@ -54,16 +57,21 @@ export default class Homepage extends Component{
   componentDidMount(){
     const { navigate } = this.props.navigation;
 
+
     this.getMovtourBeacons(); // Recolhe a lista de beacons do Movtour;
     this.bluetoothCheck(); // Verifica o estado do bluetooth
 
     if(Platform.OS === 'android'){
       this.AndroidPermission(); // Lança um popup para o utilizador escolher se aceita ou não que a app utilize a localização do dispositivo.
     }
-    this.startBeaconDetection(); // Inicia a deteção de beacons;
-    this.startRanging(); // Inicia a procura de beacons
 
-    AppState.addEventListener('change', this._handleAppStateChange);
+
+    AppState.addEventListener('change', this.handleAppStateChange);
+    RNBluetoothInfo.addEventListener('change', this.handleConnection);
+
+
+
+
 
     this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange',(data: {
         beacons: Array<{distance: number, proximity: string, rssi: string, uuid: string}>,
@@ -72,6 +80,7 @@ export default class Homepage extends Component{
       }) => {
         // Se for detectado algum beacon, verifica se é dos Movtour e encontra qual o mais próximo, adicionando-o à variável closerBeacon.
         console.log("Beacons detetados: ", data.beacons);
+
         if (data.beacons.length > 0){
           let movtourBeacons = data.beacons.filter(beacon => this.movtourBeacons.includes(beacon.uuid));
           this.detectedBeacons = movtourBeacons;
@@ -99,6 +108,14 @@ export default class Homepage extends Component{
           this.detectedBeacons = null;
         }
 
+        if (this.appState.match(/active/)){
+          if (this.date_time > Date.now()%5000 - 500 && this.date_time < Date.now()%5000 + 500) {
+            console.log(`Closer Beacon: ${this.closerBeacon}`);
+            this.openPOI();
+          }
+        }
+
+
         if (this.appState.match(/inactive|background/)){
           if (this.date_time > Date.now()%5000 - 500 && this.date_time < Date.now()%5000 + 500) {
             this.sendNotification();
@@ -107,12 +124,12 @@ export default class Homepage extends Component{
     });
 
     // X segundos em X segundos abre o openPOI
-    if (this.appState.match(/active/)){
-      setInterval(() => {
-        console.log(`Closer Beacon: ${this.closerBeacon}`);
-        this.openPOI();
-      }, 5000);
-    }
+    // if (this.appState.match(/active/)){
+    //   setInterval(() => {
+    //     console.log(`Closer Beacon: ${this.closerBeacon}`);
+    //     this.openPOI();
+    //   }, 5000);
+    // }
 
     // Push Notifications settings
     PushNotification.configure({
@@ -140,22 +157,55 @@ export default class Homepage extends Component{
       popInitialNotification: true,
       requestPermissions: true,
     });
-    
+
     this.date_time = Date.now()%5000;
   } //fim do componentDidMount
 
   componentWillUnmount() {
-    AppState.removeEventListener('change', this._handleAppStateChange);
+    AppState.removeEventListener('change', this.handleAppStateChange);
+    RNBluetoothInfo.removeEventListener('change', this.handleConnection)
     this.stopRanging();
     this.beaconsDidRangeEvent.remove();
   }
 
   //Se o estado da app (foreground/background/inactive) mudar, atualizar a variável 'appState'
-  _handleAppStateChange = (nextAppState) => {
+  handleAppStateChange = (nextAppState) => {
     if (this.appState.match(/inactive|background/) && nextAppState === 'active') {
       console.log('App has come to the foreground!')
     }
     this.appState = nextAppState;
+  }
+
+  handleConnection = (resp) => {
+    let {connectionState} = resp.type;
+    console.log('bluetooth status: ', connectionState);
+
+    if (connectionState === 'on'){
+      this.startBeaconDetection(); // Inicia a deteção de beacons;
+      this.startRanging(); // Inicia a procura de beacons
+    }
+    if (connectionState === 'off'){
+      this.stopRanging(); // Inicia a procura de beacons
+      // this.beaconsDidRangeEvent.remove();
+    }
+  }
+
+  async startBeaconDetection(){
+    let teste = true;
+    console.log(`beaconsServiceDidConnect: ${this.beaconsServiceDidConnect}`);
+    try {
+      await Beacons.addIBeaconsDetection()
+    } catch (error) {
+      console.log(`something went wrong during beacon detection initialization: ${error}`);
+    }
+
+    this.beaconsServiceDidConnect = Beacons.BeaconsEventEmitter.addListener('beaconServiceConnected',() => {
+      console.log('------------Service Connected-------------');
+      this.startRanging();
+    });
+
+      this.startRanging();
+
   }
 
   async startRanging(){
@@ -173,14 +223,6 @@ export default class Homepage extends Component{
       console.log('Beacons stopped ranging successfully');
     } catch (error) {
       throw error;
-    }
-  }
-
-  async startBeaconDetection(){
-    try {
-      await Beacons.addIBeaconsDetection();
-    } catch (error) {
-      console.log(`something went wrong during beacon detection initialization: ${error}`);
     }
   }
 
@@ -223,7 +265,9 @@ export default class Homepage extends Component{
                 [{text: I18n.t('alertBluetoothButtonUnderstand')}],
               )
             }
-
+          } else {
+            this.startBeaconDetection(); // Inicia a deteção de beacons;
+            // this.startRanging(); // Inicia a procura de beacons
           }
       })
   }
