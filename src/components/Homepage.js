@@ -65,12 +65,8 @@ export default class Homepage extends Component{
       this.AndroidPermission(); // Lança um popup para o utilizador escolher se aceita ou não que a app utilize a localização do dispositivo.
     }
 
-
     AppState.addEventListener('change', this.handleAppStateChange);
     RNBluetoothInfo.addEventListener('change', this.handleConnection);
-
-
-
 
 
     this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange',(data: {
@@ -191,8 +187,6 @@ export default class Homepage extends Component{
   }
 
   async startBeaconDetection(){
-    let teste = true;
-    console.log(`beaconsServiceDidConnect: ${this.beaconsServiceDidConnect}`);
     try {
       await Beacons.addIBeaconsDetection()
     } catch (error) {
@@ -204,7 +198,7 @@ export default class Homepage extends Component{
       this.startRanging();
     });
 
-      this.startRanging();
+    this.startRanging();
 
   }
 
