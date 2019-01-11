@@ -46,6 +46,7 @@ target 'Movtour' do
 
 
 
+
   pod 'ReactNativeBeaconsManager', :path => '../node_modules/react-native-beacons-manager'
 
 end

@@ -158,8 +158,8 @@ configurations.all {
 }
 
 dependencies {
-    compile project(':react-native-bluetooth-info')
     compile project(':react-native-beacons-manager')
+    compile project(':react-native-bluetooth-info')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-languages')
     compile project(':react-native-fs')

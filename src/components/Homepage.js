@@ -57,7 +57,6 @@ export default class Homepage extends Component{
   componentDidMount(){
     const { navigate } = this.props.navigation;
 
-
     this.getMovtourBeacons(); // Recolhe a lista de beacons do Movtour;
     this.bluetoothCheck(); // Verifica o estado do bluetooth
 
@@ -68,12 +67,12 @@ export default class Homepage extends Component{
     AppState.addEventListener('change', this.handleAppStateChange);
     RNBluetoothInfo.addEventListener('change', this.handleConnection);
 
-
     this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange',(data: {
         beacons: Array<{distance: number, proximity: string, rssi: string, uuid: string}>,
         uuid: string,
         indetifier: string,
       }) => {
+
         // Se for detectado algum beacon, verifica se é dos Movtour e encontra qual o mais próximo, adicionando-o à variável closerBeacon.
         console.log("Beacons detetados: ", data.beacons);
 
