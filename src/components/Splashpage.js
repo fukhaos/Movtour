@@ -53,6 +53,7 @@ export default class Homepage extends Component {
   componentDidMount(){
     // -- FETCHING DATA ---------------------------------------------- FETCHING DATA --
     fetch('http://movtour.ipt.pt/monuments.json', {timeout: 10 * 1000})
+    // fetch('http://192.168.161.14:3000/monuments.json', {timeout: 10 * 1000})
       .then(res => res.json())
       .then(res => {
         if(res.status == 500) {
