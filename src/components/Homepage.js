@@ -38,6 +38,9 @@ export default class Homepage extends Component{
   beaconsDidRangeEvent = null;
   beaconsServiceDidConnect: any = null;
 
+  // will be set as a reference to "authorizationStatusDidChange" event:
+  authStateDidRangeEvent = null;
+
   // VARIAVEIS
   @observable date_time = 0;
   @observable appState = AppState.currentState;
@@ -55,16 +58,15 @@ export default class Homepage extends Component{
   componentDidMount(){
     const { navigate } = this.props.navigation;
 
-    // this.getMovtourBeacons(); // Recolhe a lista de beacons do Movtour;
-    this.bluetoothCheck(); // Verifica o estado do bluetooth
+    if(Platform.OS === 'ios'){
+      Beacons.requestAlwaysAuthorization();
+    }
 
     if(Platform.OS === 'android'){
       this.AndroidPermission(); // Lança um popup para o utilizador escolher se aceita ou não que a app utilize a localização do dispositivo.
     }
 
-    if(Platform.OS === 'ios'){
-      Beacons.requestWhenInUseAuthorization();
-    }
+    this.bluetoothCheck(); // Verifica o estado do bluetooth
 
     AppState.addEventListener('change', this.handleAppStateChange);
     RNBluetoothInfo.addEventListener('change', this.handleConnection);
@@ -165,6 +167,12 @@ export default class Homepage extends Component{
       console.log('Beacons ranging started successfully');
     } catch (error) {
       throw error;
+    }
+
+    if(Platform.OS === 'ios'){
+      this.authStateDidRangeEvent = Beacons.BeaconsEventEmitter.addListener('authorizationStatusDidChange',
+        info => console.log('authorizationStatusDidChange: ', info),
+      );
     }
   };
 

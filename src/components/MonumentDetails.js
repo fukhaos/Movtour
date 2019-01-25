@@ -36,34 +36,48 @@ export default class MonumentDetails extends Component{
 
 	descriptionByLocale(poi){
 		const {description_type_position} = this.props.store;
+		console.log(description_type_position);
+		console.log(poi.poi_descriptions[description_type_position-1].description_pt.length);
 		switch(I18n.locale){
 			case 'pt-PT':
 				return(
+					poi.poi_descriptions[description_type_position-1].description_pt.length ?
 					<HTMLView
-						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_pt}
+						value={poi.poi_descriptions[description_type_position-1].description_pt}
 						stylesheet={styles}
 					/>
+					:
+					<Text style={styles.bodyContentText}>{I18n.t('noInformation')}</Text>
 				);
 			case 'en-GB':
 				return(
+					poi.poi_descriptions[description_type_position-1].description_en.length ?
 					<HTMLView
-						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_en}
+						value={poi.poi_descriptions[description_type_position-1].description_en}
 						stylesheet={styles}
 					/>
+					:
+					<Text style={styles.bodyContentText}>{I18n.t('noInformation')}</Text>
 				);
 			case 'fr-FR':
 				return(
+					poi.poi_descriptions[description_type_position-1].description_fr.length ?
 					<HTMLView
-						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_fr}
+						value={poi.poi_descriptions[description_type_position-1].description_fr}
 						stylesheet={styles}
 					/>
+					:
+					<Text style={styles.bodyContentText}>{I18n.t('noInformation')}</Text>
 				);
 			case 'de-DE':
 				return(
+					poi.poi_descriptions[description_type_position-1].description_de.length ?
 					<HTMLView
-						value={poi.poi_descriptions[description_type_position-1] == undefined ? 'Sem informação.' : poi.poi_descriptions[description_type_position-1].description_de}
+						value={poi.poi_descriptions[description_type_position-1].description_de}
 						stylesheet={styles}
 					/>
+					:
+					<Text style={styles.bodyContentText}>{I18n.t('noInformation')}</Text>
 				);
 		}
 	}
@@ -216,6 +230,12 @@ const styles = StyleSheet.create({
 		borderTopColor:'grey',
 		margin:10,
 		paddingTop:10,
+	},
+
+	bodyContentText:{
+		fontSize: 16,
+		lineHeight: 25,
+		color: 'black',
 	},
 
 	p:{
