@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -14,6 +15,7 @@
 		00E356F31AD99517003FC87E /* MovtourTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* MovtourTests.m */; };
 		054844B12388445B8E0E6B06 /* SimpleLineIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 43990B9165F14286A47D6F58 /* SimpleLineIcons.ttf */; };
 		06A5BCB4B8D640BBBC8BBEAB /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF2FA364059544D69A66E331 /* Entypo.ttf */; };
+		0CB3E058DE2A4048AC203F66 /* libRNBluetoothInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2412DD5BBD2499281BDF2A5 /* libRNBluetoothInfo.a */; };
 		1114AB07A326482085FABDDF /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A86EC4E86A674CA0934021A9 /* FontAwesome5_Brands.ttf */; };
 		11D1A2F320CAFA9E000508D9 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		133E29F31AD74F7200F7D852 /* libRCTLinking.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 78C398B91ACF4ADC00677621 /* libRCTLinking.a */; };
@@ -56,6 +58,7 @@
 		B17D16A1BBBC4B53B224148A /* libRNGestureHandler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 604F751D56AC4BDB9E29A3E1 /* libRNGestureHandler.a */; };
 		BB936136A44C468C91C78A63 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = E7FC265E622148F19BCE4676 /* FontAwesome5_Solid.ttf */; };
 		BD6315FD216F9424006463FF /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD6315FA216F93A3006463FF /* libART.a */; };
+		BD69E1ED21F767D700D7D88E /* libRNiBeacon.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD69E1E821F7679500D7D88E /* libRNiBeacon.a */; };
 		BD73DF03819942A3959E8716 /* Ionicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7B111AC5ED404CBE920E17B3 /* Ionicons.ttf */; };
 		BD9C7B3E216E55F3004BD78A /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BD9C7B1C216E5532004BD78A /* libRCTPushNotification.a */; };
 		CBA09483BC054A4584D85001 /* libRNDeviceInfo-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FEAAB30927045D291A7B205 /* libRNDeviceInfo-tvOS.a */; };
@@ -65,7 +68,6 @@
 		EA1902E38732451D83297040 /* Feather.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 52A6C3E4FAC74636B888CEBC /* Feather.ttf */; };
 		F2BC04D3E0D743519F2309C5 /* AntDesign.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F7B681A203F4F3FA96E8416 /* AntDesign.ttf */; };
 		F92A40F71C1B0DD8AD1145EF /* libPods-Movtour.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0D0BE5D954482E18867F3EC3 /* libPods-Movtour.a */; };
-		0CB3E058DE2A4048AC203F66 /* libRNBluetoothInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A2412DD5BBD2499281BDF2A5 /* libRNBluetoothInfo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -391,6 +393,20 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RNGestureHandler;
 		};
+		BD69E1E721F7679500D7D88E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = BD69E1B221F7679500D7D88E /* RNiBeacon.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 0D03EBDE1E56B1E700C55E6B;
+			remoteInfo = RNiBeacon;
+		};
+		BD96AEB721E89B6B00219B76 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0EEF7147862640ECA4E8F088 /* RNBluetoothInfo.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RNBluetoothInfo;
+		};
 		BD9C7AE8216E539C004BD78A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 273B32384F264A658A2741D5 /* RNBluetoothManager.xcodeproj */;
@@ -462,6 +478,7 @@
 		06DFC6BDF83A8EE8E1508842 /* Pods-Movtour.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movtour.release.xcconfig"; path = "Pods/Target Support Files/Pods-Movtour/Pods-Movtour.release.xcconfig"; sourceTree = "<group>"; };
 		0C3361490E8D4148A5321597 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		0D0BE5D954482E18867F3EC3 /* libPods-Movtour.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Movtour.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		0EEF7147862640ECA4E8F088 /* RNBluetoothInfo.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNBluetoothInfo.xcodeproj; path = "../node_modules/react-native-bluetooth-info/ios/RNBluetoothInfo.xcodeproj"; sourceTree = "<group>"; };
 		1265F59CA29048478384822D /* RNGestureHandler.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNGestureHandler.xcodeproj; path = "../node_modules/react-native-gesture-handler/ios/RNGestureHandler.xcodeproj"; sourceTree = "<group>"; };
 		13306011054844B6AA2252CA /* libRNVectorIcons-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNVectorIcons-tvOS.a"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
@@ -500,9 +517,11 @@
 		81CB0F7AD3874CFD9E871C52 /* libRNFS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFS.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		9F7B681A203F4F3FA96E8416 /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		A2412DD5BBD2499281BDF2A5 /* libRNBluetoothInfo.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNBluetoothInfo.a; sourceTree = "<group>"; };
 		A86EC4E86A674CA0934021A9 /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		BD6315F4216F93A3006463FF /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
+		BD69E1B221F7679500D7D88E /* RNiBeacon.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNiBeacon.xcodeproj; path = "../node_modules/react-native-beacons-manager/ios/RNiBeacon/RNiBeacon.xcodeproj"; sourceTree = "<group>"; };
 		BD9C7B0A216E5531004BD78A /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
 		BF2FA364059544D69A66E331 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		C7F621EEF2209C86111E4BE2 /* Pods-Movtour.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Movtour.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Movtour/Pods-Movtour.debug.xcconfig"; sourceTree = "<group>"; };
@@ -513,8 +532,6 @@
 		EF178B099F184FE8801ED0FE /* RNVectorIcons.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNVectorIcons.xcodeproj; path = "../node_modules/react-native-vector-icons/RNVectorIcons.xcodeproj"; sourceTree = "<group>"; };
 		F31BD0FCDBE0437A9DC1DFB2 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		FBC9FF054F27420894E8D278 /* libRNLanguages-tvOS.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = "libRNLanguages-tvOS.a"; sourceTree = "<group>"; };
-		0EEF7147862640ECA4E8F088 /* RNBluetoothInfo.xcodeproj */ = {isa = PBXFileReference; name = "RNBluetoothInfo.xcodeproj"; path = "../node_modules/react-native-bluetooth-info/ios/RNBluetoothInfo.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		A2412DD5BBD2499281BDF2A5 /* libRNBluetoothInfo.a */ = {isa = PBXFileReference; name = "libRNBluetoothInfo.a"; path = "libRNBluetoothInfo.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -530,6 +547,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				BD69E1ED21F767D700D7D88E /* libRNiBeacon.a in Frameworks */,
 				BD6315FD216F9424006463FF /* libART.a in Frameworks */,
 				BD9C7B3E216E55F3004BD78A /* libRCTPushNotification.a in Frameworks */,
 				ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */,
@@ -731,6 +749,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				BD69E1B221F7679500D7D88E /* RNiBeacon.xcodeproj */,
 				BD6315F4216F93A3006463FF /* ART.xcodeproj */,
 				BD9C7B0A216E5531004BD78A /* RCTPushNotification.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
@@ -838,6 +857,22 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		BD69E1B321F7679500D7D88E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD69E1E821F7679500D7D88E /* libRNiBeacon.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BD96AEB421E89B6B00219B76 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				BD96AEB821E89B6B00219B76 /* libRNBluetoothInfo.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		BD9C7AB8216E5399004BD78A /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -851,6 +886,7 @@
 				25A7A4F0AA174E259F30FEE5 /* libRNLanguages.a */,
 				FBC9FF054F27420894E8D278 /* libRNLanguages-tvOS.a */,
 				604F751D56AC4BDB9E29A3E1 /* libRNGestureHandler.a */,
+				A2412DD5BBD2499281BDF2A5 /* libRNBluetoothInfo.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1106,6 +1142,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = BD96AEB421E89B6B00219B76 /* Products */;
+					ProjectRef = 0EEF7147862640ECA4E8F088 /* RNBluetoothInfo.xcodeproj */;
+				},
+				{
 					ProductGroup = BD9C7AE3216E539C004BD78A /* Products */;
 					ProjectRef = 273B32384F264A658A2741D5 /* RNBluetoothManager.xcodeproj */;
 				},
@@ -1124,6 +1164,10 @@
 				{
 					ProductGroup = BD68BBD621B53BF900A8CD27 /* Products */;
 					ProjectRef = 1265F59CA29048478384822D /* RNGestureHandler.xcodeproj */;
+				},
+				{
+					ProductGroup = BD69E1B321F7679500D7D88E /* Products */;
+					ProjectRef = BD69E1B221F7679500D7D88E /* RNiBeacon.xcodeproj */;
 				},
 				{
 					ProductGroup = BD61551B21762283009EF645 /* Products */;
@@ -1453,6 +1497,20 @@
 			remoteRef = BD68BBD921B53BF900A8CD27 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		BD69E1E821F7679500D7D88E /* libRNiBeacon.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNiBeacon.a;
+			remoteRef = BD69E1E721F7679500D7D88E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		BD96AEB821E89B6B00219B76 /* libRNBluetoothInfo.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNBluetoothInfo.a;
+			remoteRef = BD96AEB721E89B6B00219B76 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		BD9C7AE9216E539C004BD78A /* libRNBluetoothManager.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1719,10 +1777,7 @@
 				INFOPLIST_FILE = MovtourTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1751,10 +1806,7 @@
 				INFOPLIST_FILE = MovtourTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1781,6 +1833,7 @@
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-info/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios",
 				);
 				INFOPLIST_FILE = Movtour/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1811,6 +1864,7 @@
 					"$(SRCROOT)/../node_modules/react-native-languages/ios",
 					"$(SRCROOT)/../node_modules/react-native-gesture-handler/ios/**",
 					"$(SRCROOT)/../node_modules/react-native-bluetooth-info/ios/**",
+					"$(SRCROOT)/../node_modules/react-native-beacons-manager/ios",
 				);
 				INFOPLIST_FILE = Movtour/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -1850,10 +1904,7 @@
 				);
 				INFOPLIST_FILE = "Movtour-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1890,10 +1941,7 @@
 				);
 				INFOPLIST_FILE = "Movtour-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1929,10 +1977,7 @@
 				);
 				INFOPLIST_FILE = "Movtour-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1968,10 +2013,7 @@
 				);
 				INFOPLIST_FILE = "Movtour-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",

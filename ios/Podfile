@@ -43,11 +43,6 @@ target 'Movtour' do
   pod 'Google-Maps-iOS-Utils' # Uncomment this line if you want to support GoogleMaps on iOS
   pod 'RNLanguages', :path => '../node_modules/react-native-languages'
   pod 'BVLinearGradient', :path => '../node_modules/react-native-linear-gradient'
-
-
-
-  pod 'ReactNativeBeaconsManager', :path => '../node_modules/react-native-beacons-manager'
-
 end
 
 post_install do |installer|

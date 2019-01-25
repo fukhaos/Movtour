@@ -41,6 +41,7 @@ I18n.translations = {
     alertBluetoothOffMsg:'Se deseja que a aplicação o avise quando estiver perto de um Ponto de Interesse, ligue o Bluetooth. Obrigado.',
     alertBluetoothButtonTurnOn:'Ligar Bluetooth',
     alertBluetoothButtonUnderstand:'Compreendi',
+    noInformation: "De momento não existe informação disponível para este ponto de interesse.",
   },
   en: {
     map: 'Map',
@@ -62,6 +63,7 @@ I18n.translations = {
     alertBluetoothOffMsg:'If you want to receive notifications when you are near a Point of Interest, turn the Bluetooth on. Thank you.',
     alertBluetoothButtonTurnOn:'Turn on Bluetooth',
     alertBluetoothButtonUnderstand:'Understood',
+    noInformation:"There is no information available for this point of interest at this moment.",
   },
   fr: {
     map: 'Carte',
@@ -83,6 +85,7 @@ I18n.translations = {
     alertBluetoothOffMsg:"Si vous souhaitez recevoir des notifications lorsque vous vous trouvez à proximité d'un point d'intérêt, activez Bluetooth. Je vous remercie.",
     alertBluetoothButtonTurnOn:'Activer le bluetooth',
     alertBluetoothButtonUnderstand:'Compris',
+    noInformation:"Il n'y a pas d'informations disponibles pour ce point d'intérêt pour le moment.",
   },
   de: {
     map: 'Karte',
@@ -104,6 +107,7 @@ I18n.translations = {
     alertBluetoothOffMsg:'Wenn Sie Benachrichtigungen erhalten möchten, wenn Sie sich in der Nähe eines Sonderziels befinden, aktivieren Sie Bluetooth. Vielen Dank.',
     alertBluetoothButtonTurnOn:'Schalten Sie das Bluetooth ein',
     alertBluetoothButtonUnderstand:'Verstanden',
+    noInformation:"Für diesen Punkt von Interesse sind derzeit keine Informationen verfügbar.",
   }
 };
 

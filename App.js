@@ -8,7 +8,7 @@ import store from './src/components/MovtourStore';
 type Props = {};
 export default class App extends Component<Props> {
   render() {
-    YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle', 'Attempted to invoke']);
+    YellowBox.ignoreWarnings(['Remote debugger', 'Require cycle:', 'Attempted to invoke', 'authorizationStatusDidChange']);
     return (
       <Provider store={store}>
           <Drawer />

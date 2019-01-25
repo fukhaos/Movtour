@@ -43,7 +43,7 @@ export default class Mapa extends Component {
 	            longitude: monumento.longitude,
 						}}
 						//calloutOffset={{x:-8, y:28}}
-						pinColor='#009688'
+						pinColor='#E5530F'
 						key={this.props.monumento}
 					/>
 

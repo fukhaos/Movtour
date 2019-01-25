@@ -105,8 +105,8 @@ android {
         applicationId "com.movtour"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
         ndk {
             abiFilters "armeabi-v7a", "x86"
         }
@@ -158,8 +158,8 @@ configurations.all {
 }
 
 dependencies {
-    compile project(':react-native-bluetooth-info')
     compile project(':react-native-beacons-manager')
+    compile project(':react-native-bluetooth-info')
     compile project(':react-native-gesture-handler')
     compile project(':react-native-languages')
     compile project(':react-native-fs')
