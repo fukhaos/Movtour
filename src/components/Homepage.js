@@ -29,7 +29,9 @@ import DeviceInfo from 'react-native-device-info';
 import PushNotification from 'react-native-push-notification';
 import { SafeAreaView } from 'react-navigation';
 import LinearGradient from 'react-native-linear-gradient';
+
 import I18n from './translate/i18n';
+import checkIfFirstLaunch from '../config/checkIfFirstLaunch';
 
 @inject('store')
 @observer
@@ -56,10 +58,14 @@ export default class Homepage extends Component{
     this.beaconInUse = value;
   }
 
-  componentDidMount(){
+  async componentDidMount(){
     if(Platform.OS === 'ios'){
       Beacons.requestAlwaysAuthorization();
-      this.checkPermission();
+
+      const firstLaunch = await checkIfFirstLaunch();
+      if (!firstLaunch) {
+        this.checkPermission();
+      }
     }
 
     if(Platform.OS === 'android'){
@@ -214,9 +220,10 @@ export default class Homepage extends Component{
     })
   }
 
+  // Quando o estado do bluetooth é alterado
   bluetoothStatus = (state) => {
     let {connectionState} = state.type;
-    console.log('type ', connectionState);
+    console.log('Bluetooth ', connectionState);
 
     if (connectionState === 'on'){
       if(Platform.OS === 'android'){
@@ -231,6 +238,7 @@ export default class Homepage extends Component{
     }
   }
 
+  // Verifica o estado do bluetooth quando a app é iniciada
   bluetoothInitialState = (state) => {
     let {connectionState} = state.type;
     console.log(connectionState);
