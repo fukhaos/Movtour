@@ -13,15 +13,16 @@ import {
   Alert,
   DeviceEventEmitter,
   PermissionsAndroid,
+  PushNotificationIOS,
   Platform,
 } from 'react-native';
 
 import { inject, observer } from 'mobx-react';
 import { action, computed, observable, toJS } from 'mobx';
 import RNFS from 'react-native-fs';
-import { BluetoothStatus } from 'react-native-bluetooth-status';
-import RNBluetoothInfo from 'react-native-bluetooth-info';
+import RNBluetoothListener from 'react-native-bluetooth-listener';
 import moment from 'moment';
+import Permissions from 'react-native-permissions'
 import Beacons from 'react-native-beacons-manager';
 import fetch from 'react-native-fetch-polyfill';
 import DeviceInfo from 'react-native-device-info';
@@ -56,20 +57,19 @@ export default class Homepage extends Component{
   }
 
   componentDidMount(){
-    const { navigate } = this.props.navigation;
-
     if(Platform.OS === 'ios'){
       Beacons.requestAlwaysAuthorization();
+      this.checkPermission();
     }
 
     if(Platform.OS === 'android'){
       this.AndroidPermission(); // Lança um popup para o utilizador escolher se aceita ou não que a app utilize a localização do dispositivo.
     }
 
-    this.bluetoothCheck(); // Verifica o estado do bluetooth
+    RNBluetoothListener.getCurrentState().then(this.bluetoothInitialState);
+    RNBluetoothListener.addEventListener('change', this.bluetoothStatus);
 
-    AppState.addEventListener('change', this.handleAppStateChange);
-    RNBluetoothInfo.addEventListener('change', this.handleConnection);
+    AppState.addEventListener('change', this.handleAppStateChange); //Desperta um evento caso a aplicação mude de estado (primeiro plano / segundo plano)
 
     this.beaconsDidRangeEvent = Beacons.BeaconsEventEmitter.addListener('beaconsDidRange',(
       data: {
@@ -78,8 +78,10 @@ export default class Homepage extends Component{
         indetifier: string,
       }) => {
 
+        console.log("Beacons detetados: ", data.beacons);
+
         if (data.beacons.length > 0){
-          console.log("Beacons detetados: ", data.beacons);
+          // console.log("Beacons detetados: ", data.beacons);
 
           let tempBeacon = data.beacons.find(x=> x.distance == Math.min(...data.beacons.map( y => y.distance)));
           console.log(`Beacon mais perto: ${tempBeacon.minor}; distancia: ${tempBeacon.distance}`);
@@ -109,6 +111,12 @@ export default class Homepage extends Component{
 
     // Push Notifications settings
     PushNotification.configure({
+      onNotification: function(notification) {
+        console.log( 'NOTIFICATION:', notification );
+        // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
+        notification.finish(PushNotificationIOS.FetchResult.NoData);
+      },
+
       popInitialNotification: true,
       requestPermissions: true,
     });
@@ -118,7 +126,7 @@ export default class Homepage extends Component{
 
   componentWillUnmount() {
     AppState.removeEventListener('change', this.handleAppStateChange);
-    RNBluetoothInfo.removeEventListener('change', this.handleConnection)
+    RNBluetoothListener.removeEventListener('change', this.bluetoothStatus)
     this.stopRanging();
     this.beaconsDidRangeEvent.remove();
   }
@@ -131,20 +139,6 @@ export default class Homepage extends Component{
     this.appState = nextAppState;
   }
 
-  handleConnection = (resp) => {
-    let {connectionState} = resp.type;
-    console.log('bluetooth status: ', connectionState);
-
-    if (connectionState === 'on'){
-      this.startBeaconDetection(); // Inicia a deteção de beacons;
-      this.startRanging(); // Inicia a procura de beacons
-    }
-    if (connectionState === 'off'){
-      this.stopRanging(); // Inicia a procura de beacons
-      // this.beaconsDidRangeEvent.remove();
-    }
-  }
-
   async startBeaconDetection(){
     try {
       await Beacons.addIBeaconsDetection()
@@ -152,33 +146,31 @@ export default class Homepage extends Component{
       console.log(`something went wrong during beacon detection initialization: ${error}`);
     }
 
-    this.beaconsServiceDidConnect = Beacons.BeaconsEventEmitter.addListener('beaconServiceConnected',() => {
-      console.log('------------Service Connected-------------');
-      this.startRanging();
-    });
-
     this.startRanging();
-
   }
 
   async startRanging(){
+    const region = {
+      identifier: 'Movtour',
+      uuid: 'b68d864b-8fc5-4888-984a-4bdc7571fc95'
+    }
+
     try {
-      await Beacons.startRangingBeaconsInRegion('Movtour', 'b68d864b-8fc5-4888-984a-4bdc7571fc95');
+      await Beacons.startRangingBeaconsInRegion(region);
       console.log('Beacons ranging started successfully');
     } catch (error) {
       throw error;
     }
-
-    if(Platform.OS === 'ios'){
-      this.authStateDidRangeEvent = Beacons.BeaconsEventEmitter.addListener('authorizationStatusDidChange',
-        info => console.log('authorizationStatusDidChange: ', info),
-      );
-    }
   };
 
   async stopRanging(){
+    const region = {
+      identifier: 'Movtour',
+      uuid: 'b68d864b-8fc5-4888-984a-4bdc7571fc95'
+    }
+
     try {
-      await Beacons.stopRangingBeaconsInRegion('Movtour', 'b68d864b-8fc5-4888-984a-4bdc7571fc95');
+      await Beacons.stopRangingBeaconsInRegion(region);
       console.log('Beacons stopped ranging successfully');
     } catch (error) {
       throw error;
@@ -204,45 +196,73 @@ export default class Homepage extends Component{
     }
   }
 
-  bluetoothCheck(){
-    BluetoothStatus.state()
-      .then((result) => {
-          if (result == false) {
-            if(Platform.OS === 'android'){
-              Alert.alert(
-                I18n.t('alertBluetoothOffTitle'),
-                I18n.t('alertBluetoothOffMsg'),
-                [
-                  {text: I18n.t('alertBluetoothButtonTurnOn'), onPress: () => this.turnBluetoothOn()},
-                  {text: I18n.t('alertBluetoothButtonUnderstand')}
-                ],
-              )
-            } else {
-              Alert.alert(
-                I18n.t('alertBluetoothOffTitle'),
-                I18n.t('alertBluetoothOffMsg'),
-                [{text: I18n.t('alertBluetoothButtonUnderstand')}],
-              )
-            }
-          } else {
-            console.log("Bluetooth ligado: vai para o método startBeaconDetection");
-            this.startBeaconDetection(); // Inicia a deteção de beacons;
-            // this.startRanging(); // Inicia a procura de beacons
-          }
-      })
+  checkPermission(){
+    Permissions.check('location', { type: 'always' }).then(response => {
+      // Response is one of: 'authorized', 'denied', 'restricted', or 'undetermined'
+      console.log("Location Permission: ", response);
+
+      if (response != 'authorized') {
+        Alert.alert(
+          'Location Permission',
+          'There was a problem getting your permission. Please enable it from settings to detect Beacons.',
+          [
+            {text: "Open Settings", onPress: () => Permissions.openSettings()},
+            {text: "Understood"}
+          ]
+        )
+      }
+    })
   }
 
-  turnBluetoothOn(){
-    BluetoothStatus.enable(true)
-      .catch(() => {
+  bluetoothStatus = (state) => {
+    let {connectionState} = state.type;
+    console.log('type ', connectionState);
+
+    if (connectionState === 'on'){
+      if(Platform.OS === 'android'){
+        this.startBeaconDetection(); // Inicia a deteção de beacons;
+      } else {
+        this.startRanging(); // Inicia a procura de beacons
+      }
+    }
+    if (connectionState === 'off'){
+      this.stopRanging(); // Inicia a procura de beacons
+      // this.beaconsDidRangeEvent.remove();
+    }
+  }
+
+  bluetoothInitialState = (state) => {
+    let {connectionState} = state.type;
+    console.log(connectionState);
+    if (connectionState === 'off'){
+      if(Platform.OS === 'android'){
         Alert.alert(
-          'Falhou a ligar o Bluetooth',
-          'A aplicação não conseguiu ligar o Bluetooth.',
+          I18n.t('alertBluetoothOffTitle'),
+          I18n.t('alertBluetoothOffMsg'),
           [
-            {text: 'Compreendi'},
+            {text: I18n.t('alertBluetoothButtonTurnOn'), onPress: () => RNBluetoothListener.enable()},
+            {text: I18n.t('alertBluetoothButtonUnderstand')}
           ],
         )
-      })
+      } else {
+        AlertIOS.alert(
+          I18n.t('alertBluetoothOffTitle'),
+          I18n.t('alertBluetoothOffMsg'),
+          [
+            {text: I18n.t('alertBluetoothButtonTurnOn'), onPress: () => RNBluetoothListener.enable()},
+            {text: I18n.t('alertBluetoothButtonUnderstand')}
+          ],
+        )
+      }
+
+    } if (connectionState === 'on'){
+      console.log("Bluetooth ligado: vai para o método startBeaconDetection");
+      if(Platform.OS === 'android'){
+        this.startBeaconDetection(); // Inicia a deteção de beacons;
+      } else {
+        this.startRanging(); // Inicia a procura de beacons
+      }
+    }
   }
 
   postFunction(k){
@@ -292,40 +312,42 @@ export default class Homepage extends Component{
     // Se não foi, mostra o beacon mais perto (closerBeacon).
     // Se foi, verifica se o beacon mais perto é o beacon que está em uso. Se for o mesmo não faz nada, se não for mostra o screen desse beacon (POI).
     if(data.monuments && this.closerBeacon){
-      console.log("Entrou");
-        if (this.beaconInUse == null || this.beaconInUse.poi.id != this.closerBeacon.poi.id) {
+      if (this.beaconInUse == null || this.beaconInUse.poi.id != this.closerBeacon.poi.id) {
+        // Define o beacon em uso
+        this.setBeaconInUse(this.closerBeacon);
 
-          // Define o beacon em uso
-          this.setBeaconInUse(this.closerBeacon);
+        // Faz um post
+        this.postFunction(this.closerBeacon.poi);
 
-          // Faz um post
-          this.postFunction(this.closerBeacon.poi);
+        // PushNotification.localNotification({
+        //   message: this.closerBeacon.poi.name
+        // });
 
-          // Vai para a pagina MonumentDetails OU se já lá estiver então faz re-render.
-            navigate({
-              routeName: 'MonumentDetails',
-              params: {monumento:this.closerBeacon.monument, poi:this.closerBeacon.poi},
-              key:'detail'
+        // Vai para a pagina MonumentDetails OU se já lá estiver então faz re-render.
+          navigate({
+            routeName: 'MonumentDetails',
+            params: {monumento:this.closerBeacon.monument, poi:this.closerBeacon.poi},
+            key:'detail'
+          });
+
+        // Se o ponto ainda não foi visitado e se a app estiver em background (segundo plano)
+        // então alerta o utilizador através de uma notificação
+        if (this.appState.match(/inactive|background/) && !this.visitedPOIs.includes(this.closerBeacon.poi.id)){
+            PushNotification.localNotification({
+              message: this.closerBeacon.poi.name
             });
-
-          // Se o ponto ainda não foi visitado e se a app estiver em background (segundo plano)
-          // então alerta o utilizador através de uma notificação
-          if (this.appState.match(/inactive|background/) && !this.visitedPOIs.includes(this.closerBeacon.poi.id)){
-              PushNotification.localNotification({
-                message: this.closerBeacon.poi.name
-              });
-          }
-
-          // Adiciona o ponto a um array para saber-mos que já foi visitado
-          if(!this.visitedPOIs.includes(this.closerBeacon.poi.id)){
-            this.visitedPOIs.push(this.closerBeacon.poi.id)
-          }
-
         }
 
-        if (this.beaconInUse.poi == this.closerBeacon.poi){
-          this.setBeaconInUse(this.closerBeacon);
+        // Adiciona o ponto a um array para saber-mos que já foi visitado
+        if(!this.visitedPOIs.includes(this.closerBeacon.poi.id)){
+          this.visitedPOIs.push(this.closerBeacon.poi.id)
         }
+
+      }
+
+      if (this.beaconInUse.poi == this.closerBeacon.poi){
+        this.setBeaconInUse(this.closerBeacon);
+      }
 
       // Faz reset à variavel
       this.closerBeacon = null;

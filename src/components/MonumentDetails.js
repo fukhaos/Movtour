@@ -36,8 +36,6 @@ export default class MonumentDetails extends Component{
 
 	descriptionByLocale(poi){
 		const {description_type_position} = this.props.store;
-		console.log(description_type_position);
-		console.log(poi.poi_descriptions[description_type_position-1].description_pt.length);
 		switch(I18n.locale){
 			case 'pt-PT':
 				return(

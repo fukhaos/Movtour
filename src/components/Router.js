@@ -19,7 +19,6 @@ import AboutUs from './AboutUs';
 import store from './MovtourStore';
 
 import { Icon } from 'react-native-elements';
-import { BluetoothStatus } from 'react-native-bluetooth-status';
 
 const Splash = createStackNavigator({
   Splashpage: {

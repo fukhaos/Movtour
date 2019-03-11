@@ -6,7 +6,7 @@ import {
   View                // Container component
 } from 'react-native';
 
-import MapView from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 import Callout from '../config/Callout';
 
 
@@ -28,6 +28,7 @@ export default class Mapa extends Component {
 			<View style={styles.container}>
 
 				<MapView
+          provider={PROVIDER_GOOGLE}
 					style={styles.map}
 					initialRegion={{
 						latitude: 39.604419,

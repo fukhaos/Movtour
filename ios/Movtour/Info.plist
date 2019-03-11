@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key></key>
+	<string></string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
@@ -37,7 +39,13 @@
 			</dict>
 		</dict>
 	</dict>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Needed for detecting beacons</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>Needed for detecting little devices called beacons</string>
 	<key>NSLocationAlwaysUsageDescription</key>
+	<string>Needed for detecting little devices called beacons</string>
+	<key>NSLocationUsageDescription</key>
 	<string>Needed for detecting little devices called beacons</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>Needed for detecting little devices called beacons</string>
@@ -63,6 +71,7 @@
 	<array>
 		<string>bluetooth-central</string>
 		<string>location</string>
+		<string>remote-notification</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
@@ -78,8 +87,6 @@
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
 	</array>
-	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Needed for detecting beacons</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
 </dict>
