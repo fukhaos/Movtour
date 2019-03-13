@@ -68,8 +68,8 @@ export default class Homepage extends Component {
           this.getSavedData();
         } else {
           this.props.store.setData(res)
-          this.deleteImages();
           this.saveImages();
+          this.deleteImages();
         }
       })
       .catch((error) => {
@@ -79,6 +79,7 @@ export default class Homepage extends Component {
   } //Fim do componentDidMount
 
   deleteImages(){
+    console.log("Vai verificar se há imagens para apagar");
     const { data } = this.props.store;
     return (
       RNFS.readDir(`${RNFS.DocumentDirectoryPath}/images/`)
@@ -87,32 +88,33 @@ export default class Homepage extends Component {
         if (result.length){
           result.map((r, index) => {
             // console.log(r.name);
-            // RNFS.hash(r.path, 'md5').then(result => console.log(`${r.name}:${result}`));
+            RNFS.hash(r.path, 'md5').then(imageHash => {
+              console.log(`${r.name}:${imageHash}`);
+              let sum = false;
+              let imgMonuments = data.monuments.filter(i => (`${i.cover_image_md5}`) === imageHash);
+              let imgPois = data.monuments.map(i => i.pois.filter(j => (`${j.cover_image_md5}`) === imageHash));
 
-            let sum = false;
-            let imgMonuments = data.monuments.filter(i => (`${i.cover_image_md5}.jpg`) === r.name);
-            let imgPois = data.monuments.map(i => i.pois.filter(j => (`${j.cover_image_md5}.jpg`) === r.name));
-
-            if (imgMonuments.length > 0) {
-              sum = true
-            }
-
-            imgPois.map(pois => {
-              if (pois.length > 0) {
+              if (imgMonuments.length > 0) {
                 sum = true
               }
-            })
 
-            if (sum == false) {
-              RNFS.unlink(r.path)
-                .then(() => {
-                  console.log('FILE DELETED: ', r.name);
-                })
-                // `unlink` will throw an error, if the item to unlink does not exist
-                .catch((err) => {
-                  console.log('Erro a apagar as imagens:', err.message);
-                });
-            }
+              imgPois.map(pois => {
+                if (pois.length > 0) {
+                  sum = true
+                }
+              })
+
+              if (sum == false) {
+                RNFS.unlink(r.path)
+                  .then(() => {
+                    console.log('FILE DELETED: ', r.name);
+                  })
+                  // `unlink` will throw an error, if the item to unlink does not exist
+                  .catch((err) => {
+                    console.log('Erro a apagar as imagens:', err.message);
+                  });
+              }
+            });
 
           }) //fim do result.map
         } //fim do if
@@ -133,15 +135,14 @@ export default class Homepage extends Component {
       });
     });
 
-    Promise.all(promises).then(
-      ()=>{
-        // So entra aqui se já tiver percorrido todo o array (data) e não houver downloads para fazer
-        if(this.willDownload == false){
-          this.showSpinner = false;
-          this.showProgressCircle = false;
-          this.props.navigation.navigate('Stack');
-        }
-      }, error => console.log("ERRRRO: ", error));
+    Promise.all(promises).then(() => {
+      // So entra aqui se já tiver percorrido todo o array (data) e não houver downloads para fazer
+      if(this.willDownload == false){
+        this.showSpinner = false;
+        this.showProgressCircle = false;
+        this.props.navigation.navigate('Stack');
+      }
+    }, error => console.log("ERRRRO: ", error));
 
   } //fim do saveImages
 
