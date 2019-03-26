@@ -68,12 +68,12 @@ export default class Homepage extends Component{
       }
     }
 
+    RNBluetoothListener.getCurrentState().then(this.bluetoothStatus);
+    RNBluetoothListener.addEventListener('change', this.bluetoothStatus);
+
     if(Platform.OS === 'android'){
       this.AndroidPermission(); // Lança um popup para o utilizador escolher se aceita ou não que a app utilize a localização do dispositivo.
     }
-
-    RNBluetoothListener.getCurrentState().then(this.bluetoothInitialState);
-    RNBluetoothListener.addEventListener('change', this.bluetoothStatus);
 
     AppState.addEventListener('change', this.handleAppStateChange); //Desperta um evento caso a aplicação mude de estado (primeiro plano / segundo plano)
 
@@ -101,7 +101,6 @@ export default class Homepage extends Component{
                     this.closerBeacon = {minor: tempBeacon.minor, monument:i, poi: j};
                   }
                 })))
-
               }
             }
           }
@@ -117,11 +116,11 @@ export default class Homepage extends Component{
 
     // Push Notifications settings
     PushNotification.configure({
-      onNotification: function(notification) {
-        console.log( 'NOTIFICATION:', notification );
-        // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
-        notification.finish(PushNotificationIOS.FetchResult.NoData);
-      },
+      // onNotification: function(notification) {
+      //   console.log( 'NOTIFICATION:', notification );
+      //   // required on iOS only (see fetchCompletionHandler docs: https://facebook.github.io/react-native/docs/pushnotificationios.html)
+      //   notification.finish(PushNotificationIOS.FetchResult.NoData);
+      // },
 
       popInitialNotification: true,
       requestPermissions: true,
@@ -220,7 +219,7 @@ export default class Homepage extends Component{
     })
   }
 
-  // Quando o estado do bluetooth é alterado
+  // Estado do Bluetooth
   bluetoothStatus = (state) => {
     let {connectionState} = state.type;
     console.log('Bluetooth ', connectionState);
@@ -228,21 +227,14 @@ export default class Homepage extends Component{
     if (connectionState === 'on'){
       if(Platform.OS === 'android'){
         this.startBeaconDetection(); // Inicia a deteção de beacons;
-      } else {
+      } else { //Se for iOS
         this.startRanging(); // Inicia a procura de beacons
       }
     }
-    if (connectionState === 'off'){
-      this.stopRanging(); // Inicia a procura de beacons
-      // this.beaconsDidRangeEvent.remove();
-    }
-  }
 
-  // Verifica o estado do bluetooth quando a app é iniciada
-  bluetoothInitialState = (state) => {
-    let {connectionState} = state.type;
-    console.log(connectionState);
     if (connectionState === 'off'){
+      this.stopRanging(); // Pára a procura de beacons
+
       if(Platform.OS === 'android'){
         Alert.alert(
           I18n.t('alertBluetoothOffTitle'),
@@ -252,23 +244,14 @@ export default class Homepage extends Component{
             {text: I18n.t('alertBluetoothButtonUnderstand')}
           ],
         )
-      } else {
-        AlertIOS.alert(
+      } else { //Se a plataforma for iOS
+        Alert.alert(
           I18n.t('alertBluetoothOffTitle'),
           I18n.t('alertBluetoothOffMsg'),
           [
-            {text: I18n.t('alertBluetoothButtonTurnOn'), onPress: () => RNBluetoothListener.enable()},
             {text: I18n.t('alertBluetoothButtonUnderstand')}
           ],
         )
-      }
-
-    } if (connectionState === 'on'){
-      console.log("Bluetooth ligado: vai para o método startBeaconDetection");
-      if(Platform.OS === 'android'){
-        this.startBeaconDetection(); // Inicia a deteção de beacons;
-      } else {
-        this.startRanging(); // Inicia a procura de beacons
       }
     }
   }

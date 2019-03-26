@@ -89,7 +89,6 @@ export default class Homepage extends Component {
           result.map((r, index) => {
             // console.log(r.name);
             RNFS.hash(r.path, 'md5').then(imageHash => {
-              console.log(`${r.name}:${imageHash}`);
               let sum = false;
               let imgMonuments = data.monuments.filter(i => (`${i.cover_image_md5}`) === imageHash);
               let imgPois = data.monuments.map(i => i.pois.filter(j => (`${j.cover_image_md5}`) === imageHash));
